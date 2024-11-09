@@ -8,6 +8,10 @@ import Profile from "./components/Profile";
 function App() {
   return (
     <>
+    <div className="header">
+      <h1>SavorStats</h1>
+      <h3>Save your stats</h3>
+    </div>
       <NavBar />
       <div>
         <Routes>
