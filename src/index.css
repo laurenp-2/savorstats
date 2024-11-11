@@ -26,14 +26,13 @@ a:hover {
 body {
   place-items: flex-start;
   margin-left: 5px;
-  min-width: 100vh;
-  min-height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
 }
-
 
 h1 {
   font-weight: 150;
-  color: #ffbc64;;
+  color: #ffbc64;
   font-size: 3.2em;
   line-height: 1.1;
 }
@@ -54,10 +53,8 @@ button {
   transition: border-color 0.25s;
 }
 
-
 button:hover {
-  background-color: #ffbc64;
-  color: #fff6eb;
+  border-color: #ffbc64;
 }
 
 button:focus,
@@ -78,7 +75,8 @@ button:focus-visible {
   }
 }
 
-input, textarea {
+input,
+textarea {
   border-radius: 8px;
   border: 1px solid #ffbc64;
   padding: 0.6em 1.2em;
@@ -90,8 +88,6 @@ input, textarea {
 input:hover {
   border-color: #f0a800;
 }
-
-
 
 .navBar {
   background-color: #ffbc64;
@@ -119,18 +115,20 @@ input:hover {
   align-items: flex-start;
   padding: 2em;
   width: 100%;
-  margin: 0 auto;
+  height: 100%;
 }
 
 .starRender {
+  align-items: center;
   color: #ffbc64;
   display: flex;
-  gap: 0.5em; 
-  
+  gap: 0.5em;
 }
 
 .starIcon {
   stroke-width: 0.5px;
+  width: 30px;
+  height: 30px;
 }
 
 .starRender:hover {
@@ -142,41 +140,38 @@ input:hover {
   gap: 0.5em;
 }
 
-
-.inputFields img {
-  border-color: #f0a800;
-}
-
 .header {
   align-self: flex-start;
-  padding: .5em;
-} 
+  padding: 0.5em;
+}
 
-.header h1{
+.header h1 {
   font-family: inherit;
 }
 
-.header h2{
+.header h2 {
   font-family: inherit;
   font-weight: 200;
 }
 
 .firstRowInputs {
   display: flex;
-  gap: 3em;
+  flex-direction: row;
+  gap: 2vw;
   flex-wrap: wrap;
-  
+  width: 100%;
 }
 
 .secondRowInputs {
   display: flex;
   flex-direction: row;
-  gap: 3em;
+  gap: 2vw;
   flex-wrap: wrap;
-  width: 90%;
+  width: 100%;
 }
 
 .columnInputs {
+  width: 45%;
   display: flex;
   flex-direction: column;
   gap: 1em;
@@ -188,25 +183,58 @@ input:hover {
 
 #descriptionInput {
   height: 20em;
-  width: 13em;
 }
 
 #uploadButton {
-  width: 90%;
+  width: 100%;
+
 }
 
 #uploadImgLabel {
+  width: 45%;
   background-color: #fff6eb;
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
-  font-weight: 350;  font-weight: 350;
+  font-weight: 350;
+  font-weight: 350;
   font-family: inherit;
+  line-height: 22em;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 
 #uploadImgLabel:hover {
   border-color: #f0a800;
+}
+
+#nameInput {
+  width: 50%;
+}
+
+#inputtedImg {
+  border: 1px solid #f0a800;
+  border-radius: 8px;
+  height: 21em;
+}
+
+.imageInputtedCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+#uploadedImgLabel {
+  width: 100%;
+  background-color: #fff6eb;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 350;
+  font-weight: 350;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
 }
