@@ -26,14 +26,13 @@ a:hover {
 body {
   place-items: flex-start;
   margin-left: 5px;
-  min-width: 100vw;
-  min-height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
 }
-
 
 h1 {
   font-weight: 150;
-  color: #ffbc64;;
+  color: #ffbc64;
   font-size: 3.2em;
   line-height: 1.1;
 }
@@ -54,10 +53,8 @@ button {
   transition: border-color 0.25s;
 }
 
-
 button:hover {
-  background-color: #ffbc64;
-  color: #fff6eb;
+  border-color: #ffbc64;
 }
 
 button:focus,
@@ -78,7 +75,8 @@ button:focus-visible {
   }
 }
 
-input, textarea {
+input,
+textarea {
   border-radius: 8px;
   border: 1px solid #ffbc64;
   padding: 0.6em 1.2em;
@@ -90,8 +88,6 @@ input, textarea {
 input:hover {
   border-color: #f0a800;
 }
-
-
 
 .navBar {
   background-color: #ffbc64;
@@ -126,14 +122,15 @@ input:hover {
   align-items: center;
   color: #ffbc64;
   display: flex;
-  gap: 0.5em; 
-  
+  gap: 0.5em;
 }
 
 .starIcon {
   stroke-width: 0.5px;
   width: 30px;  
   height: 30px; 
+  width: 30px;
+  height: 30px;
 }
 
 .starRender:hover {
@@ -145,21 +142,16 @@ input:hover {
   gap: 0.5em;
 }
 
-
-.inputFields img {
-  border-color: #f0a800;
-}
-
 .header {
   align-self: flex-start;
-  padding: .5em;
-} 
+  padding: 0.5em;
+}
 
-.header h1{
+.header h1 {
   font-family: inherit;
 }
 
-.header h2{
+.header h2 {
   font-family: inherit;
   font-weight: 200;
 }
@@ -167,9 +159,12 @@ input:hover {
 .firstRowInputs {
   display: flex;
   gap: 2vw;
+  flex-direction: row;
+  gap: 2vw;
   flex-wrap: wrap;
   width: 100%;
   
+  width: 100%;
 }
 
 .secondRowInputs {
@@ -197,6 +192,8 @@ input:hover {
 
 #uploadButton {
   width: 100%;
+  width: 100%;
+
 }
 
 #uploadImgLabel {
@@ -206,8 +203,10 @@ input:hover {
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
-  font-weight: 350;  font-weight: 350;
+  font-weight: 350;
+  font-weight: 350;
   font-family: inherit;
+  line-height: 22em;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -218,4 +217,30 @@ input:hover {
 
 #nameInput {
   width: 50%;
+}
+
+#inputtedImg {
+  border: 1px solid #f0a800;
+  border-radius: 8px;
+  height: 21em;
+}
+
+.imageInputtedCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+#uploadedImgLabel {
+  width: 100%;
+  background-color: #fff6eb;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 350;
+  font-weight: 350;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
 }

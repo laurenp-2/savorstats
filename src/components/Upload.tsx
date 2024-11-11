@@ -11,6 +11,17 @@ const Upload = () => {
   const [image, setImage] = useState<File | null>(null);
   const [hoveredStar, setHoveredStar] = useState(0);
 
+  const reset = () => {
+    setName(""); 
+    setStars(0); 
+    setDescription(""); 
+    setRecipeLink(""); 
+    setTimeHours(0); 
+    setTimeMin(0); 
+    setImage(null); 
+    setHoveredStar(0); 
+  }; 
+
   const uploadImg = async (event: ChangeEvent<HTMLInputElement>) => {
     //stuff to do when image is uploaded
     const file = event.target.files?.[0];
@@ -31,6 +42,8 @@ const Upload = () => {
       image,
     };
     //add stuff handling sending postData to the server
+
+    reset(); 
   };
 
   const renderStars = () => {
@@ -46,6 +59,7 @@ const Upload = () => {
       />
     ));
   };
+
 
   return (
     <>
@@ -88,7 +102,7 @@ const Upload = () => {
 
         <div className="secondRowInputs">
           <div className="columnInputs">
-            <textarea 
+            <textarea
               id="descriptionInput"
               placeholder="Description"
               value={description}
@@ -105,19 +119,33 @@ const Upload = () => {
               }}
             />
           </div>
-          <input id="uploadImgInput" accept="image/*" type="file" onChange={uploadImg} />
-          <label htmlFor="uploadImgInput" id="uploadImgLabel">
-                Choose Image
-            </label>
-            {image && (
-              <img src={URL.createObjectURL(image)} alt="Uploaded preview" />
-            )}
-          
-          
-          
+          <input
+                id="uploadImgInput"
+                accept="image/*"
+                type="file"
+                onChange={uploadImg}
+              />
+          {!image ? (
+            <>
+              <label htmlFor="uploadImgInput" id="uploadImgLabel">
+                Upload Image
+              </label>
+            </>
+          ) : (
+            <div className="imageInputtedCol">
+             {image && (<img id="inputtedImg" src={URL.createObjectURL(image)} alt="Uploaded preview" />)}
+              
+            
+            <label htmlFor="uploadImgInput" id="uploadedImgLabel">
+                Change Image
+              </label>
+            </div>
+          )}
         </div>
 
-        <button id="uploadButton" onClick={uploadPost}>Upload</button>
+        <button id="uploadButton" onClick={uploadPost}>
+          Upload
+        </button>
       </div>
     </>
   );
