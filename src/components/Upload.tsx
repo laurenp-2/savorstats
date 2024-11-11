@@ -38,10 +38,11 @@ const Upload = () => {
       <Star
         key={rating}
         onClick={() => setStars(rating)}
-        onMouseEnter = {() => setHoveredStar(rating)}
-        onMouseLeave = {() => setHoveredStar(0)}
-        fill={rating <= (hoveredStar || stars) ? "#ffbc64" : "gray"}
+        onMouseEnter={() => setHoveredStar(rating)}
+        onMouseLeave={() => setHoveredStar(0)}
+        fill={rating <= (hoveredStar || stars) ? "#ffbc64" : "#fff6eb"}
         style={{ cursor: "pointer" }}
+        className="starIcon"
       />
     ));
   };
@@ -49,62 +50,73 @@ const Upload = () => {
   return (
     <>
       <div className="inputFields">
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(event) => {
-            setName(event.target.value);
-          }}
-        />
-
-        <div className="starRender">{renderStars()}</div>
-        
-
-        <textarea
-          placeholder="Description"
-          value={description}
-          onChange={(event) => {
-            setDescription(event.target.value);
-          }}
-        />
-        <input
-          type="text"
-          placeholder="Link of Recipe"
-          value={recipeLink}
-          onChange={(event) => {
-            setRecipeLink(event.target.value);
-          }}
-        />
-
-        <div className="timeInput"> 
-            <input
-            type="number"
-            value={timeHours}
-            min={1}
-            max={12}
+        <div className="firstRowInputs">
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
             onChange={(event) => {
-                setTimeHours(event.target.valueAsNumber);
+              setName(event.target.value);
             }}
+          />
+
+          <div className="timeInput">
+            <input
+              type="number"
+              value={timeHours}
+              min={1}
+              max={12}
+              onChange={(event) => {
+                setTimeHours(event.target.valueAsNumber);
+              }}
             />
             <p>:</p>
             <input
-            type="number"
-            value={timeMin}
-            min={0}
-            max={59}
-            onChange={(event) => {
+              type="number"
+              value={timeMin}
+              min={0}
+              max={59}
+              onChange={(event) => {
                 setTimeMin(event.target.valueAsNumber);
-            }}
+              }}
             />
-        </div>
-        
-        {image && (
-          <img src={URL.createObjectURL(image)} alt="Uploaded preview" />
-        )}
-        <input type="file" onChange={uploadImg} />
+          </div>
 
-        <button onClick={uploadPost}>Upload</button>
+          <div className="starRender">{renderStars()}</div>
+        </div>
+
+        <div className="secondRowInputs">
+          <div className="columnInputs">
+            <textarea 
+              id="descriptionInput"
+              placeholder="Description"
+              value={description}
+              onChange={(event) => {
+                setDescription(event.target.value);
+              }}
+            />
+            <input
+              type="text"
+              placeholder="Link of Recipe"
+              value={recipeLink}
+              onChange={(event) => {
+                setRecipeLink(event.target.value);
+              }}
+            />
+          </div>
+          <input id="uploadImgInput" accept="image/*" type="file" onChange={uploadImg} />
+          <label htmlFor="uploadImgInput" id="uploadImgLabel">
+                Upload Image
+            </label>
+            {image && (
+              <img src={URL.createObjectURL(image)} alt="Uploaded preview" />
+            )}
+          
+          
+          
+        </div>
+
+        <button id="uploadButton" onClick={uploadPost}>Upload</button>
       </div>
     </>
   );

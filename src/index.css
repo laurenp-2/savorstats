@@ -15,7 +15,7 @@
 }
 
 a {
-  font-weight: 500;
+  font-weight: 350;
   color: #ffbc64;
   text-decoration: inherit;
 }
@@ -24,15 +24,22 @@ a:hover {
 }
 
 body {
-  margin: 0;
-  place-items: start;
-  min-width: 320px;
+  place-items: flex-start;
+  margin-left: 5px;
+  min-width: 100vh;
   min-height: 100vh;
 }
 
+
 h1 {
+  font-weight: 150;
+  color: #ffbc64;;
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+h3 {
+  font-weight: 100;
 }
 
 button {
@@ -40,12 +47,13 @@ button {
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
-  font-weight: 500;
+  font-weight: 350;
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 
 button:hover {
   background-color: #ffbc64;
@@ -75,7 +83,7 @@ input, textarea {
   border: 1px solid #ffbc64;
   padding: 0.6em 1.2em;
   font-size: 1em;
-  font-weight: 500;
+  font-weight: 350;
   font-family: inherit;
 }
 
@@ -114,23 +122,26 @@ input:hover {
   margin: 0 auto;
 }
 
-.inputFields .starRender {
+.starRender {
+  color: #ffbc64;
   display: flex;
   gap: 0.5em; 
+  
 }
 
-.inputFields .timeInput {
+.starIcon {
+  stroke-width: 0.5px;
+}
+
+.starRender:hover {
+  color: #f2a053;
+}
+
+.timeInput {
   display: flex;
   gap: 0.5em;
 }
 
-.inputFields .timeInput input {
-  border-color: transparent;
-}
-
-.inputFields .timeInput input:hover {
-  border-color: transparent;
-}
 
 .inputFields img {
   border-color: #f0a800;
@@ -148,4 +159,54 @@ input:hover {
 .header h2{
   font-family: inherit;
   font-weight: 200;
+}
+
+.firstRowInputs {
+  display: flex;
+  gap: 3em;
+  flex-wrap: wrap;
+  
+}
+
+.secondRowInputs {
+  display: flex;
+  flex-direction: row;
+  gap: 3em;
+  flex-wrap: wrap;
+  width: 90%;
+}
+
+.columnInputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+#uploadImgInput {
+  display: none;
+}
+
+#descriptionInput {
+  height: 20em;
+  width: 13em;
+}
+
+#uploadButton {
+  width: 90%;
+}
+
+#uploadImgLabel {
+  background-color: #fff6eb;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 350;  font-weight: 350;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+#uploadImgLabel:hover {
+  border-color: #f0a800;
 }
