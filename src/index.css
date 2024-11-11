@@ -26,7 +26,7 @@ a:hover {
 body {
   place-items: flex-start;
   margin-left: 5px;
-  min-width: 100vh;
+  min-width: 100vw;
   min-height: 100vh;
 }
 
@@ -119,10 +119,11 @@ input:hover {
   align-items: flex-start;
   padding: 2em;
   width: 100%;
-  margin: 0 auto;
+  height: 100%;
 }
 
 .starRender {
+  align-items: center;
   color: #ffbc64;
   display: flex;
   gap: 0.5em; 
@@ -131,6 +132,8 @@ input:hover {
 
 .starIcon {
   stroke-width: 0.5px;
+  width: 30px;  
+  height: 30px; 
 }
 
 .starRender:hover {
@@ -163,20 +166,22 @@ input:hover {
 
 .firstRowInputs {
   display: flex;
-  gap: 3em;
+  gap: 2vw;
   flex-wrap: wrap;
+  width: 100%;
   
 }
 
 .secondRowInputs {
   display: flex;
   flex-direction: row;
-  gap: 3em;
+  gap: 2vw;
   flex-wrap: wrap;
-  width: 90%;
+  width: 100%;
 }
 
 .columnInputs {
+  width: 45%;
   display: flex;
   flex-direction: column;
   gap: 1em;
@@ -188,14 +193,14 @@ input:hover {
 
 #descriptionInput {
   height: 20em;
-  width: 13em;
 }
 
 #uploadButton {
-  width: 90%;
+  width: 100%;
 }
 
 #uploadImgLabel {
+  width: 45%;
   background-color: #fff6eb;
   border-radius: 8px;
   border: 1px solid transparent;
@@ -209,4 +214,8 @@ input:hover {
 
 #uploadImgLabel:hover {
   border-color: #f0a800;
+}
+
+#nameInput {
+  width: 50%;
 }

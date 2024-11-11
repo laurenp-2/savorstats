@@ -52,8 +52,9 @@ const Upload = () => {
       <div className="inputFields">
         <div className="firstRowInputs">
           <input
+            id="nameInput"
             type="text"
-            placeholder="Name"
+            placeholder="Recipe Name"
             value={name}
             onChange={(event) => {
               setName(event.target.value);
@@ -97,7 +98,7 @@ const Upload = () => {
             />
             <input
               type="text"
-              placeholder="Link of Recipe"
+              placeholder="Link to Recipe"
               value={recipeLink}
               onChange={(event) => {
                 setRecipeLink(event.target.value);
@@ -106,7 +107,7 @@ const Upload = () => {
           </div>
           <input id="uploadImgInput" accept="image/*" type="file" onChange={uploadImg} />
           <label htmlFor="uploadImgInput" id="uploadImgLabel">
-                Upload Image
+                Choose Image
             </label>
             {image && (
               <img src={URL.createObjectURL(image)} alt="Uploaded preview" />
