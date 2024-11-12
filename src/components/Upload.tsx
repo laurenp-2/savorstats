@@ -12,15 +12,15 @@ const Upload = () => {
   const [hoveredStar, setHoveredStar] = useState(0);
 
   const reset = () => {
-    setName(""); 
-    setStars(0); 
-    setDescription(""); 
-    setRecipeLink(""); 
-    setTimeHours(0); 
-    setTimeMin(0); 
-    setImage(null); 
-    setHoveredStar(0); 
-  }; 
+    setName("");
+    setStars(0);
+    setDescription("");
+    setRecipeLink("");
+    setTimeHours(0);
+    setTimeMin(0);
+    setImage(null);
+    setHoveredStar(0);
+  };
 
   const uploadImg = async (event: ChangeEvent<HTMLInputElement>) => {
     //stuff to do when image is uploaded
@@ -43,7 +43,7 @@ const Upload = () => {
     };
     //add stuff handling sending postData to the server
 
-    reset(); 
+    reset();
   };
 
   const renderStars = () => {
@@ -59,7 +59,6 @@ const Upload = () => {
       />
     ));
   };
-
 
   return (
     <>
@@ -120,11 +119,11 @@ const Upload = () => {
             />
           </div>
           <input
-                id="uploadImgInput"
-                accept="image/*"
-                type="file"
-                onChange={uploadImg}
-              />
+            id="uploadImgInput"
+            accept="image/*"
+            type="file"
+            onChange={uploadImg}
+          />
           {!image ? (
             <>
               <label htmlFor="uploadImgInput" id="uploadImgLabel">
@@ -133,10 +132,15 @@ const Upload = () => {
             </>
           ) : (
             <div className="imageInputtedCol">
-             {image && (<img id="inputtedImg" src={URL.createObjectURL(image)} alt="Uploaded preview" />)}
-              
-            
-            <label htmlFor="uploadImgInput" id="uploadedImgLabel">
+              {image && (
+                <img
+                  id="inputtedImg"
+                  src={URL.createObjectURL(image)}
+                  alt="Uploaded preview"
+                />
+              )}
+
+              <label htmlFor="uploadImgInput" id="uploadedImgLabel">
                 Change Image
               </label>
             </div>

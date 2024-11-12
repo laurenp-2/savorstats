@@ -83,6 +83,7 @@ textarea {
   font-size: 1em;
   font-weight: 350;
   font-family: inherit;
+  resize: none;
 }
 
 input:hover {
@@ -187,7 +188,7 @@ input:hover {
 }
 
 #descriptionInput {
-  height: 20em;
+  height: 30vh;
 }
 
 #uploadButton {
@@ -198,6 +199,7 @@ input:hover {
 
 #uploadImgLabel {
   width: 45%;
+  height: 37vh;
   background-color: #fff6eb;
   border-radius: 8px;
   border: 1px solid transparent;
@@ -206,7 +208,7 @@ input:hover {
   font-weight: 350;
   font-weight: 350;
   font-family: inherit;
-  line-height: 22em;
+  line-height: 18em;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -222,7 +224,8 @@ input:hover {
 #inputtedImg {
   border: 1px solid #f0a800;
   border-radius: 8px;
-  height: 21em;
+  height: 32.5vh;
+  width: 40vw;
 }
 
 .imageInputtedCol {
