@@ -4,6 +4,7 @@ import NavBar from "./NavBar";
 import Upload from "./components/Upload";
 import Feed from "./components/Feed";
 import Profile from "./components/Profile";
+import Login from "./components/Login";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Feed />} />
           <Route path="/upload" element={<Upload />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </>
