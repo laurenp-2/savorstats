@@ -25,4 +25,4 @@ dist-ssr
 
 
 # Firebase service account key
-service_account.json
+server/service-account.json
