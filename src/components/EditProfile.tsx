@@ -65,7 +65,33 @@ const EditProfile = ({ profileData, onSave, onCancel }: EditProfileProps) => {
         </div>
         <div className="updateProfPic">
           <p>Profile Pic:</p>
-          <input accept="image/*" type="file" onChange={uploadImg} />
+          <input
+            id="uploadImgInput"
+            accept="image/*"
+            type="file"
+            onChange={uploadImg}
+          />
+          {!profilePic ? (
+            <>
+              <label htmlFor="uploadImgInput" id="uploadProfPicLabel">
+                Upload Image
+              </label>
+            </>
+          ) : (
+            <div className="imageInputtedCol">
+              {profilePic && (
+                <img
+                  id="uploadedProfPic"
+                  src={URL.createObjectURL(profilePic)}
+                  alt="Uploaded preview"
+                />
+              )}
+
+              <label htmlFor="uploadImgInput" id="changeProfPicLabel">
+                Change Image
+              </label>
+            </div>
+          )}
         </div>
       </div>
       <div className="updateProfButtons">
