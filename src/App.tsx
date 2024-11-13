@@ -10,7 +10,7 @@ function App() {
     <>
     <div className="header">
       <h1>SavorStats</h1>
-      <h3>Save your stats</h3>
+      <h3>Save your stats!</h3>
     </div>
       <NavBar />
       <div>

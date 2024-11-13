@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, ChangeEvent } from "react";
 import { Star } from "lucide-react";
 
@@ -30,20 +31,24 @@ const Upload = () => {
     }
   };
 
-  const uploadPost = () => {
+  const uploadPost = async() => {
     //stuff to do when the post is to be uploaded
     const postData = {
-      name,
-      stars,
-      description,
-      recipeLink,
-      timeHours,
-      timeMin,
-      image,
+      name: name,
+      stars: stars,
+      description: description,
+      recipeLink: recipeLink,
+      timeHours: timeHours,
+      timeMin: timeMin
     };
     //add stuff handling sending postData to the server
-
-    reset();
+    try {
+      reset();
+      console.log ("uploaded"!); 
+    } catch (error){
+      console.error("failed to upload :("); 
+    }
+    
   };
 
   const renderStars = () => {
