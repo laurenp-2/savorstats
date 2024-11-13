@@ -1,18 +1,27 @@
-import { useState } from "react";
 import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import NavBar from "./NavBar";
+import Upload from "./components/Upload";
+import Feed from "./components/Feed";
+import Profile from "./components/Profile";
 
 function App() {
-    const [count, setCount] = useState(0);
-
-    return (
-        <>
-            <div className='card'>
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-            </div>
-        </>
-    );
+  return (
+    <>
+    <div className="header">
+      <h1>SavorStats</h1>
+      <h3>Save your stats</h3>
+    </div>
+      <NavBar />
+      <div>
+        <Routes>
+          <Route path="/" element={<Feed />} />
+          <Route path="/upload" element={<Upload />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </div>
+    </>
+  );
 }
 
 export default App;
