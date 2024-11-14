@@ -4,13 +4,13 @@ const Login = () => {
   const [username, setUsername] = useState(""); //can be email too
   const [password, setPassword] = useState("");
 
-  const login = () => {
-    //stuff to do when the post is to be uploaded
-    const userData = {
-      username,
-      password,
-    };
-  };
+  // const login = () => {
+  //   //stuff to do when the post is to be uploaded
+  //   const userData = {
+  //     username,
+  //     password,
+  //   };
+  // };
 
   const login = async () => {
     try {
@@ -21,9 +21,9 @@ const Login = () => {
         });
         const data = await response.json();
         if (response.ok) {
-            setMessage(data.message); 
+            postMessage(data.message); 
         } else {
-            setMessage(data.message); 
+          postMessage(data.message); 
         }
     } catch (error) {
         console.error('Error:', error);

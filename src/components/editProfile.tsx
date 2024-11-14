@@ -39,7 +39,7 @@ const EditProfile = ({ profileData, onSave, onCancel }: EditProfileProps) => {
     });
   };
 
-  const updateProfile = async (userID, updatedData) => {
+  const updateProfile = async (userID: string, updatedData: EditProfileProps["profileData"]) => {
     try {
         const response = await fetch(`http://localhost:8080/api/users/:userId'`, {
             method: 'PUT',

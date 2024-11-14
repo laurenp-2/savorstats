@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import EditProfile from "./EditProfile"; 
-import React, { useState } from "react";
-import EditProfile from "./EditProfile";
+import EditProfile from './editProfile'
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({

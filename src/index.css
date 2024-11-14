@@ -309,6 +309,7 @@ input:hover {
   width: 10em;
   border: 1px solid #ffbc64;
   border-radius: 8%;
+  object-fit: cover;
 }
 
 #uploadProfPicLabel {
