@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, ChangeEvent } from "react";
 import { Star } from "lucide-react";
 
@@ -12,15 +13,15 @@ const Upload = () => {
   const [hoveredStar, setHoveredStar] = useState(0);
 
   const reset = () => {
-    setName(""); 
-    setStars(0); 
-    setDescription(""); 
-    setRecipeLink(""); 
-    setTimeHours(0); 
-    setTimeMin(0); 
-    setImage(null); 
-    setHoveredStar(0); 
-  }; 
+    setName("");
+    setStars(0);
+    setDescription("");
+    setRecipeLink("");
+    setTimeHours(0);
+    setTimeMin(0);
+    setImage(null);
+    setHoveredStar(0);
+  };
 
   const uploadImg = async (event: ChangeEvent<HTMLInputElement>) => {
     //stuff to do when image is uploaded
@@ -30,20 +31,24 @@ const Upload = () => {
     }
   };
 
-  const uploadPost = () => {
+  const uploadPost = async() => {
     //stuff to do when the post is to be uploaded
     const postData = {
-      name,
-      stars,
-      description,
-      recipeLink,
-      timeHours,
-      timeMin,
-      image,
+      name: name,
+      stars: stars,
+      description: description,
+      recipeLink: recipeLink,
+      timeHours: timeHours,
+      timeMin: timeMin
     };
     //add stuff handling sending postData to the server
-
-    reset(); 
+    try {
+      reset();
+      console.log ("uploaded"!); 
+    } catch (error){
+      console.error("failed to upload :("); 
+    }
+    
   };
 
   const renderStars = () => {
@@ -60,14 +65,14 @@ const Upload = () => {
     ));
   };
 
-
   return (
     <>
       <div className="inputFields">
         <div className="firstRowInputs">
           <input
+            id="nameInput"
             type="text"
-            placeholder="Name"
+            placeholder="Recipe Name"
             value={name}
             onChange={(event) => {
               setName(event.target.value);
@@ -111,7 +116,7 @@ const Upload = () => {
             />
             <input
               type="text"
-              placeholder="Link of Recipe"
+              placeholder="Link to Recipe"
               value={recipeLink}
               onChange={(event) => {
                 setRecipeLink(event.target.value);
@@ -119,11 +124,11 @@ const Upload = () => {
             />
           </div>
           <input
-                id="uploadImgInput"
-                accept="image/*"
-                type="file"
-                onChange={uploadImg}
-              />
+            id="uploadImgInput"
+            accept="image/*"
+            type="file"
+            onChange={uploadImg}
+          />
           {!image ? (
             <>
               <label htmlFor="uploadImgInput" id="uploadImgLabel">
@@ -132,10 +137,15 @@ const Upload = () => {
             </>
           ) : (
             <div className="imageInputtedCol">
-             {image && (<img id="inputtedImg" src={URL.createObjectURL(image)} alt="Uploaded preview" />)}
-              
-            
-            <label htmlFor="uploadImgInput" id="uploadedImgLabel">
+              {image && (
+                <img
+                  id="inputtedImg"
+                  src={URL.createObjectURL(image)}
+                  alt="Uploaded preview"
+                />
+              )}
+
+              <label htmlFor="uploadImgInput" id="uploadedImgLabel">
                 Change Image
               </label>
             </div>

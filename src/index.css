@@ -31,14 +31,30 @@ body {
 }
 
 h1 {
-  font-weight: 150;
+  font-weight: 300;
   color: #ffbc64;
   font-size: 3.2em;
-  line-height: 1.1;
+  line-height: 0.2em;
+}
+
+h2 {
+  color: #f2a053;
+  font-size: 2.3em;
 }
 
 h3 {
-  font-weight: 100;
+  font-weight: lighter;
+}
+
+.header {
+  display: flex;
+  gap: 1em;
+  margin: 0em;
+  padding: 0em;
+}
+
+.header h3 {
+  line-height: 3.5em;
 }
 
 button {
@@ -83,6 +99,7 @@ textarea {
   font-size: 1em;
   font-weight: 350;
   font-family: inherit;
+  resize: none;
 }
 
 input:hover {
@@ -92,9 +109,8 @@ input:hover {
 .navBar {
   background-color: #ffbc64;
   border-radius: 8px;
-  padding: 1em;
-  width: 90%;
-  margin: 0 auto;
+  padding: 1em; 
+  margin: auto;
 }
 
 .navBar .navLinks {
@@ -111,9 +127,10 @@ input:hover {
 .inputFields {
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: 1.5em;
   align-items: flex-start;
-  padding: 2em;
+  margin-top: 1em;
+
   width: 100%;
   height: 100%;
 }
@@ -127,6 +144,8 @@ input:hover {
 
 .starIcon {
   stroke-width: 0.5px;
+  width: 30px;  
+  height: 30px; 
   width: 30px;
   height: 30px;
 }
@@ -140,25 +159,14 @@ input:hover {
   gap: 0.5em;
 }
 
-.header {
-  align-self: flex-start;
-  padding: 0.5em;
-}
-
-.header h1 {
-  font-family: inherit;
-}
-
-.header h2 {
-  font-family: inherit;
-  font-weight: 200;
-}
-
 .firstRowInputs {
   display: flex;
+  gap: 2vw;
   flex-direction: row;
   gap: 2vw;
   flex-wrap: wrap;
+  width: 100%;
+  
   width: 100%;
 }
 
@@ -182,16 +190,18 @@ input:hover {
 }
 
 #descriptionInput {
-  height: 20em;
+  height: 40vh;
 }
 
 #uploadButton {
+  width: 100%;
   width: 100%;
 
 }
 
 #uploadImgLabel {
   width: 45%;
+  height: 47vh;
   background-color: #fff6eb;
   border-radius: 8px;
   border: 1px solid transparent;
@@ -200,7 +210,7 @@ input:hover {
   font-weight: 350;
   font-weight: 350;
   font-family: inherit;
-  line-height: 22em;
+  line-height: 23em;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -214,9 +224,11 @@ input:hover {
 }
 
 #inputtedImg {
-  border: 1px solid #f0a800;
+  border: 1px solid #ffbc64;
   border-radius: 8px;
-  height: 21em;
+  height: 42.5vh;
+  width: 40vw;
+  object-fit: cover;
 }
 
 .imageInputtedCol {
@@ -237,4 +249,102 @@ input:hover {
   font-family: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
+}
+
+#uploadedImgLabel:hover {
+  border-color: #ffbc64;
+}
+
+.profileInfo {
+  display: flex;
+  padding: 2em;
+  gap: 2em;
+}
+
+.profileColTwo {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  line-height: 0;
+}
+
+.profileColOne {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.updateProfile {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  gap: 2em;
+}
+
+.updateUsername, .updateBio, .updateProfPic {
+  display: flex;
+  gap: 1em;
+}
+
+.updateProfile p {
+  text-align: start;
+  width: 10%;
+}
+
+.updateProfButtons {
+  display: flex;
+  gap: 2em; 
+}
+
+#profilePicture {
+  width: 100px; 
+  height: 100px; 
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #f0a800;
+}
+
+#uploadedProfPic {
+  height: 10em;
+  width: 10em;
+  border: 1px solid #ffbc64;
+  border-radius: 8%;
+}
+
+#uploadProfPicLabel {
+  height: 10em;
+  width: 10em;
+  background-color: #fff6eb;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 350;
+  font-weight: 350;
+  font-family: inherit;
+  line-height: 2em;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+#uploadProfPicLabel:hover {
+  border-color: #ffbc64;
+}
+
+#changeProfPicLabel {
+  width: 10vw;
+  background-color: #fff6eb;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 350;
+  font-weight: 350;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+#changeProfPicLabel:hover {
+  border-color: #ffbc64;
 }
