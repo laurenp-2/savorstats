@@ -1,4 +1,6 @@
 import express from 'express';
+export default App;
+
 
 const app = express();
 const port = 8080;
@@ -43,3 +45,4 @@ app.put('/api/users/:userId', (req, res) => {
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+
