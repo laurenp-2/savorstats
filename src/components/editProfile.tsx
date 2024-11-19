@@ -23,6 +23,22 @@ const EditProfile = ({ profileData, onSave, onCancel }: EditProfileProps) => {
     profileData.profilePic
   );
 
+  
+  const updateProfile = async (userID, updatedData) => {
+    try {
+        const response = await fetch(`http://localhost:8080/api/users/:userId'`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedData)
+        });
+        const data = await response.json();
+        console.log(data.message); 
+        console.log(data.data);    
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
   const uploadImg = async (event: ChangeEvent<HTMLInputElement>) => {
     //stuff to do when image is uploaded
     const file = event.target.files?.[0];
