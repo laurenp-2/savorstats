@@ -32,13 +32,18 @@ app.put('/users/:userId', (req, res) => {
 app.get('/feed/:userID', (req, res) => {
   try {
     const db = admin.firestore();
-    const id = req.params.id
+    const id = req.params.id;
 
-    const user = db.find(user => user.id === req.params.id)
+    const user = db.find(user => user.id === id);
+    res.status(200).json(user);
+    if(!user){
+      console.error('user not found')
+      return res.status(404).json({error: 'User not found'})
+    }
   
   } catch (error) {
-    console.log(error)
-    res.status(500).json({error: "error fetching user's posts"})
+    console.log(error);
+    res.status(500).json({error: "error fetching user's posts"});
   }
 });
 
