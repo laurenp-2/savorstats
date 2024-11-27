@@ -13,10 +13,16 @@ const db = admin.firestore();
 //for creating new account 
 app.post('/signup', (req, res) => {
   const {username, password} = req.body
-  if (username === 'admin' && password === 'password123') {
-    res.status(200).json({ message: 'Login successful' });
-  } else {
-    res.status(401).json({ message: 'Unauthorized' });
+  try {
+    const db = admin.firestore();
+
+    if(!username || !password ){
+      
+    }
+
+
+  } catch (error) {
+    
   }
 
 });
