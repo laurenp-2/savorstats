@@ -29,9 +29,47 @@ app.post('/signup', (req, res) => {
 
 //updating profile 
 app.put('/users/:userId', (req, res) => {
-  const username = req.params.username;
-  const updatedProfile = req.body;
-  res.json({ message: `Updated profile for user: ${username}`, data: updatedProfile });
+  const userId = req.params.userId; 
+  const {username, bio, profilePic} = req.body; 
+
+  //check if anything was edited 
+  if(!username && !bio && !profilePic){
+    return res.status(400).json({'no changes made'});
+  }
+
+  try {
+    const db = admin.firestore();
+    //change 'users' when get firestore set up and category names 
+    const userRef = db.collection('users').doc(userId);
+
+    //check if username is unique
+
+    if(username){
+      const userCheck = await db.collection('users').where('username', '==', username);
+      if(!usernameSnapshot.empty){
+        //make sure the username is someone elses and they're not just using the same one
+        existingUser = userCheck.docs[0].id; 
+        if(existingUser !== userId){
+          return res.status(400).json({error: 'Username is already taken'});
+        }
+      }
+    }
+    //update data 
+    const updates = {}
+    if (username) updates.username = username; 
+    if (bio) updates.bio = bio; 
+    if (profilePic) updates.profilePic = profilePic; 
+
+    await userRef.update(updates);
+
+    res.status(200).json({
+      message: 'profile updated successfully!'
+    });
+  } catch (error){
+    console.log('Error updating profile', error);
+    res.status(500).json({error: 'Error updating profile'});
+  }
+  
 });
 
 //getting a users profile
