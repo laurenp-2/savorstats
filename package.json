@@ -16,6 +16,7 @@
     "eslint-plugin-jsdoc": "^50.4.3",
     "express": "^4.21.1",
     "file-type": "^19.6.0",
+    "firebase": "^11.0.2",
     "lucide-react": "^0.456.0",
     "react": "^18.2.0",
     "react-dom": "^18.3.1",
