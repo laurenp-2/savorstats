@@ -4,7 +4,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import { auth, analytics } from "./utils/firebase";
+import { AuthUserProvider } from "./auth/AuthUserProvider";
 
 
   const rootElement = document.getElementById("root");
@@ -14,7 +14,9 @@ import { auth, analytics } from "./utils/firebase";
     root.render(
       <React.StrictMode>
         <BrowserRouter>
+        <AuthUserProvider>
           <App />
+          </AuthUserProvider>
         </BrowserRouter>
       </React.StrictMode>
     );

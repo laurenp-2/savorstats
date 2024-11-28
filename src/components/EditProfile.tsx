@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ChangeEvent } from "react";
 import { useState } from "react";
+import { AuthUserProvider, useAuth } from "../auth/AuthUserProvider";
+import { auth, database } from "../utils/firebase";
+
+
+  
 
 interface EditProfileProps {
   profileData: {
@@ -17,6 +22,7 @@ interface EditProfileProps {
 }
 
 const EditProfile = ({ profileData, onSave, onCancel }: EditProfileProps) => {
+  const { user } = useAuth();
   const [username, setUsername] = useState(profileData.username);
   const [bio, setBio] = useState(profileData.bio);
   const [profilePic, setProfilePic] = useState<File | null>(
@@ -43,6 +49,7 @@ const EditProfile = ({ profileData, onSave, onCancel }: EditProfileProps) => {
     const file = event.target.files?.[0];
     if (file != null && file.type.startsWith("image/")) {
       setProfilePic(file);
+
     }
   };
 

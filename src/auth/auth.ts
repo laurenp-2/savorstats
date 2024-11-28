@@ -1,7 +1,7 @@
 import { auth, database } from "../utils/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { sendEmailVerification } from "firebase/auth";
+
 
 const provider = new GoogleAuthProvider(); 
 
@@ -18,19 +18,14 @@ export const signIn = async () => {
     const user = result.user;
     console.log(user);
 
-    if (!user.emailVerified) {
-      await sendEmailVerification(user);
-      console.log("Verification email sent.");
-    }
-
-    const userRef = doc(database, "users", user.uid); 
+    const userRef = doc(database, "users", user.uid); //add user to database
     await setDoc(userRef, {
       name: user.displayName,
       email: user.email,
       photoURL: user.photoURL,
       uid: user.uid,
       lastLogin: new Date(),
-    });
+    }, { merge: true });
 
     return { token, user };
   } catch (error: unknown) {
