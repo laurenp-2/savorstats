@@ -201,7 +201,25 @@ app.delete('/posts/:postId', (req, res) => {
     console.error('Error deleting post:', error); 
     res.status(500).json({error: 'Internal server error'}; )
   }
-]});
+});
+
+//get all posts 
+app.get('/feed', async (req, res) =>{
+  try {
+    const db = admin.firestore();
+    const postsSnapshot = await db.collection('posts').get(); 
+
+    const posts = postsSnapshot.docs.map((doc) => ({
+      id: doc.id, 
+      ...doc.data,
+    }));
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error('Error fetching posts:', error); 
+    res.status(500).json({error: 'Internal server error'}); 
+  }
+  
+})
 
 
 
