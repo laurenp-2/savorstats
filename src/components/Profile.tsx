@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import EditProfile from './editProfile'
 
 const Profile = () => {
@@ -9,6 +10,7 @@ const Profile = () => {
   });
 
   const [isEditing, setIsEditing] = useState(false);
+  const [posts, setPosts] = useState([]);
 
   const handleUpdateProfile = (
     updatedData: React.SetStateAction<{
@@ -35,6 +37,10 @@ const Profile = () => {
       return []; 
     }
   }
+
+  useEffect(() => {
+    fetchUserPosts(profileData.username).then((data) => setPosts(data));
+  }, [profileData.username]); 
 
   return (
     <div>
@@ -65,7 +71,7 @@ const Profile = () => {
           {/*Render posts */}
           <div className="profileFeed">
             <h3>My Posts</h3>
-            {postMessage.length > 0 ? (
+            {posts.length > 0 ? (
               posts.map((post) => (
                 <div key ={post.id} className = "postCard">
                   <img src={post.image} className = "postImage" />

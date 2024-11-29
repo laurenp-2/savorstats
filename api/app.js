@@ -40,7 +40,7 @@ app.post('/signup', (req, res) => {
       return res.status(200).json({ message: 'User already exists.', user: userDoc.data() });
     }
 
-    // Create a new user document in Firestore
+    // Create a new user document in Firestoreg
     await userRef.set({
       uid,
       email,
@@ -58,7 +58,7 @@ app.post('/signup', (req, res) => {
 });
 
 //updating profile 
-app.put('/users/:userId', (req, res) => {
+app.put('/users/:userId', async (req, res) => {
   const userId = req.params.uid; 
   const {username, bio, profilePic} = req.body; 
 
@@ -103,21 +103,23 @@ app.put('/users/:userId', (req, res) => {
 });
 
 //getting a users profile
-app.get('/feed/:userID', (req, res) => {
+app.get('/feed/:uid', async (req, res) => {
+  const uid = req.params.uid;
+
   try {
     const db = admin.firestore();
-    const id = req.params.id;
+    const userRef = db.collection('users').doc(uid);
+    const userSnapshot = await userRef.get();
 
-    const user = db.find(user => user.id === id);
-    res.status(200).json(user);
-    if(!user){
-      console.error('user not found')
-      return res.status(404).json({error: 'User not found'})
+    if (!userSnapshot.exists) {
+      return res.status(404).json({ error: 'User not found' });
     }
-  
+
+    const userData = userSnapshot.data();
+    res.status(200).json(userData);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({error: "error fetching user's posts"});
+    console.error('Error fetching user profile:', error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -125,9 +127,9 @@ app.get('/feed/:userID', (req, res) => {
 app.get('/posts/:username', async (req, res) =>){
   try {
     const db = admin.firestore(); 
-    const username = req.params.username; 
+    const uid = req.params.uid; 
 
-    const postsSnapshot = await db.collection('posts').where('username', '==', username); 
+    const postsSnapshot = await db.collection('posts').where('uid', '==', uid).get(); 
 
     const posts = postSnapshot.docs.map((doc) =>) ({
       id: doc.id, 
@@ -148,15 +150,15 @@ app.post('/addPost', async (req, res) => {
     // Reference to the Firestore database
     const db = admin.firestore();
 
-    const { description, image, name, recipeLink, stars, timeHours, timeMin, username } = req.body;
+    const { description, image, name, recipeLink, stars, timeHours, timeMin, uid } = req.body;
 
     // Validate input
-    if (!description || !image || !name || !recipeLink || stars === undefined || timeHours === undefined || timeMin === undefined ||!username) {
+    if (!description || !image || !name || !recipeLink || stars === undefined || timeHours === undefined || timeMin === undefined ||!uid) {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
-    const postRef = db.collection('posts').doc(); 
-    const postID = postRef.id; // Firestore generated ID
+    // const postRef = db.collection('posts').doc(uid); 
+    // const postID = postRef.uid; // Firestore generated ID
 
     // Create a new document in the 'posts' collection
     const newPost = {
@@ -168,7 +170,7 @@ app.post('/addPost', async (req, res) => {
       stars,
       timeHours,
       timeMin,
-      username,
+      uid,
     };
 
     await postRef.set(newPost) 
