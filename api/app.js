@@ -6,30 +6,60 @@ const app = express();
 const port = 8080;
 app.use(express.json());
 app.use(cors());
+const admin = require('firebase-admin');
+
+
+const serviceAccount = require('C:\Users\rinah\Downloads\savorstats-89306-firebase-adminsdk-fufjv-52a66b686c.json')
+
+// Initialize Firebase Admin SDK
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount), 
+  databaseURL: "https://<savorstats-89306>.firebaseio.com" 
+});
 
 const db = admin.firestore();
 
 
 //for creating new account 
 app.post('/signup', (req, res) => {
-  const {username, password} = req.body
-  try {
+\  try {
     const db = admin.firestore();
+    const {uid, email, name, photoURL} = req.body
 
-    if(!username || !password ){
-      
+
+    if((!uid && !email) || !name || !photoURL ){
+      return res.status(400).json({ error: 'uid/email is required' });
     }
 
+    // Check if the user already exists in Firestore
+    const userRef = db.collection('users').doc(uid);
+    const userDoc = await userRef.get();
+
+    if (userDoc.exists) {
+      // User already exists, return a message
+      return res.status(200).json({ message: 'User already exists.', user: userDoc.data() });
+    }
+
+    // Create a new user document in Firestore
+    await userRef.set({
+      uid,
+      email,
+      name,
+      photoURL,
+      lastLogin: new Date().toISOString(),
+    });
+    // Respond with success message
+    res.status(201).json({ message: 'New account created successfully!', uid });
 
   } catch (error) {
-    
+    console.error('Error creating new account:', error);
+    res.status(500).json({ error: 'Error creating new account.' });
   }
-
 });
 
 //updating profile 
 app.put('/users/:userId', (req, res) => {
-  const userId = req.params.userId; 
+  const userId = req.params.uid; 
   const {username, bio, profilePic} = req.body; 
 
   //check if anything was edited 
@@ -40,7 +70,7 @@ app.put('/users/:userId', (req, res) => {
   try {
     const db = admin.firestore();
     //change 'users' when get firestore set up and category names 
-    const userRef = db.collection('users').doc(userId);
+    const userRef = db.collection('users').doc(uid);
 
     //check if username is unique
 
@@ -127,7 +157,7 @@ app.post('/addPost', async (req, res) => {
 
 //deleting a post
 app.delete('/posts/:postId', (req, res) => {
-  const postId = req.params.postId;
+  const postId = req.params.postID;
   res.json({ message: `Deleted post with ID: ${postId}` });
 });
 
