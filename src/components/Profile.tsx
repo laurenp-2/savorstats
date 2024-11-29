@@ -21,6 +21,21 @@ const Profile = () => {
     setIsEditing(false);
   };
 
+  async function fetchUserPosts(username: string){
+    try{
+      const response = await fetch(`http://localhost:8080/posts/${username}`)
+    if(!response.ok){
+      throw new Error(`Failed to fetch posts: ${response.statusText}`);
+
+    }
+    const postsData = await response.json(); 
+    return postsData; 
+    } catch (error){
+      console.error('Error fetching posts:', error); 
+      return []; 
+    }
+  }
+
   return (
     <div>
       {isEditing ? (
@@ -46,6 +61,26 @@ const Profile = () => {
               <h2>{profileData.username}</h2>
               <p>{profileData.bio}</p>
             </div>
+          </div>
+          {/*Render posts */}
+          <div className="profileFeed">
+            <h3>My Posts</h3>
+            {postMessage.length > 0 ? (
+              posts.map((post) => (
+                <div key ={post.id} className = "postCard">
+                  <img src={post.image} className = "postImage" />
+                  <h4>{post.name}</h4>
+                  <p>{post.description}</p>
+                  <a href = {post.recipeLink} target ="_blank" rel = "noopener noreferrer">
+                    View Recipe 
+                  </a>
+                  <p>{post.stars}</p>
+                  <p> {post.timeHours}h {post.timeMin}m</p>
+                  </div>
+              ))
+            ) : (
+              <p>No posts to display.</p>
+            )}
           </div>
         </>
       )}

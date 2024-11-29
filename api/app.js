@@ -121,21 +121,46 @@ app.get('/feed/:userID', (req, res) => {
   }
 });
 
+//get all of a users posts
+app.get('/posts/:username', async (req, res) =>){
+  try {
+    const db = admin.firestore(); 
+    const username = req.params.username; 
+
+    const postsSnapshot = await db.collection('posts').where('username', '==', username); 
+
+    const posts = postSnapshot.docs.map((doc) =>) ({
+      id: doc.id, 
+      ...doc.data(),
+    });
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error('Error fetching posts:', error); 
+    res.status(500).json({error: 'Internal server error.'}); 
+    
+  }
+};
+
 //create a new post 
 app.post('/addPost', async (req, res) => {
-  const { description, image, name, recipeLink, stars, timeHours, timeMin } = req.body;
-
-  // Validate input
-  if (!description || !image || !name || !recipeLink || stars === undefined || timeHours === undefined || timeMin === undefined) {
-    return res.status(400).json({ error: 'All fields are required.' });
-  }
 
   try {
     // Reference to the Firestore database
     const db = admin.firestore();
 
+    const { description, image, name, recipeLink, stars, timeHours, timeMin, username } = req.body;
+
+    // Validate input
+    if (!description || !image || !name || !recipeLink || stars === undefined || timeHours === undefined || timeMin === undefined ||!username) {
+      return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    const postRef = db.collection('posts').doc(); 
+    const postID = postRef.id; // Firestore generated ID
+
     // Create a new document in the 'posts' collection
     const newPost = {
+      postId, 
       description,
       image,
       name,
@@ -143,9 +168,10 @@ app.post('/addPost', async (req, res) => {
       stars,
       timeHours,
       timeMin,
+      username,
     };
 
-    const postRef = await db.collection('posts').add(newPost);
+    await postRef.set(newPost) 
 
     // Respond with the document ID
     return res.status(201).json({ message: 'Post added successfully!', postId: postRef.id });
@@ -158,8 +184,22 @@ app.post('/addPost', async (req, res) => {
 //deleting a post
 app.delete('/posts/:postId', (req, res) => {
   const postId = req.params.postID;
-  res.json({ message: `Deleted post with ID: ${postId}` });
-});
+  try {
+    const postRef = db.collection('posts').doc(postID);
+
+    //check if post exists
+    const postSnapshot = await postRef.get(); 
+    if(!postSnapshot.exists){
+      return res.status(404).json({error: 'Post not found.'});
+    }
+
+    await postRef.delete(); 
+    res.status(200).json({message: `Post deleted!`});
+  } catch (error){
+    console.error('Error deleting post:', error); 
+    res.status(500).json({error: 'Internal server error'}; )
+  }
+]});
 
 
 

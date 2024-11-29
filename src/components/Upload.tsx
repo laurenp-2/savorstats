@@ -31,25 +31,28 @@ const Upload = () => {
     }
   };
 
-  const uploadPost = async() => {
-    //stuff to do when the post is to be uploaded
-    const postData = {
-      name: name,
-      stars: stars,
-      description: description,
-      recipeLink: recipeLink,
-      timeHours: timeHours,
-      timeMin: timeMin
-    };
-    //add stuff handling sending postData to the server
+  async function createPost(postData){
     try {
-      reset();
-      console.log ("uploaded"!); 
+      const response = await fetch('http://localhost:8080/addPost', {
+        method: 'POST', 
+        headers: {
+          'Content-Type' : 'application/json', 
+        }, 
+        body: JSON.stringify(postData),
+      });
+
+      if(!response.ok){
+        throw new Error(`Failed to create post: ${response.statusText}`);
+      }
+
+      const result = await response.json(); 
+      console.log('Post created successfully:', result); 
+      return result; 
+
     } catch (error){
-      console.error("failed to upload :("); 
+      console.error('Error creating post: ', error);
     }
-    
-  };
+  }
 
   const renderStars = () => {
     return [1, 2, 3, 4, 5].map((rating) => (
@@ -152,9 +155,22 @@ const Upload = () => {
           )}
         </div>
 
-        <button id="uploadButton" onClick={uploadPost}>
-          Upload
-        </button>
+        <button
+        id="uploadButton"
+        onClick={() =>
+          createPost({
+            name,
+            description,
+            recipeLink,
+            timeHours,
+            timeMin,
+            stars,
+            image: image ? URL.createObjectURL(image) : null, // Optional: send image preview URL
+          })
+        }
+      >
+        Upload
+      </button>
       </div>
     </>
   );
