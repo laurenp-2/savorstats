@@ -157,11 +157,11 @@ app.post('/addPost', async (req, res) => {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
-    // const postRef = db.collection('posts').doc(uid); 
+    const postsCollectionRef = db.collection("users").doc(userId).collection("posts");
     // const postID = postRef.uid; // Firestore generated ID
 
     // Create a new document in the 'posts' collection
-    const newPost = {
+    const newPost = await postsCollectionRef.add({
       postId, 
       description,
       image,
@@ -171,9 +171,8 @@ app.post('/addPost', async (req, res) => {
       timeHours,
       timeMin,
       uid,
-    };
+    });
 
-    await postRef.set(newPost) 
 
     // Respond with the document ID
     return res.status(201).json({ message: 'Post added successfully!', postId: postRef.id });
