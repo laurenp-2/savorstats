@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, ChangeEvent } from "react";
 import { Star } from "lucide-react";
+import { database } from "../utils/firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Upload = () => {
   const [name, setName] = useState("");
@@ -23,6 +26,17 @@ const Upload = () => {
     setHoveredStar(0);
   };
 
+  interface PostData {
+    name: string;
+    description: string;
+    recipeLink: string;
+    timeHours: number;
+    timeMin: number;
+    stars: number;
+    image: string | null;
+  }
+  
+
   const uploadImg = async (event: ChangeEvent<HTMLInputElement>) => {
     //stuff to do when image is uploaded
     const file = event.target.files?.[0];
@@ -31,9 +45,30 @@ const Upload = () => {
     }
   };
 
-  async function createPost(postData){
+  const storage = getStorage();
+
+  async function createPost(postData: PostData){
+    //handles the image being a URL and ensure image is permanently stored in FireStore
     try {
-      const response = await fetch('http://localhost:8080/addPost', {
+      let imageUrl: string | null = null;
+      if (image) {
+        const imageRef = ref(storage, `images/${Date.now()}_${image.name}`);
+        const uploadTask = uploadBytesResumable(imageRef, image); 
+        
+        await new Promise((resolve, reject) => {
+          uploadTask.on(
+            "state_changed",
+            null, 
+            (error) => reject(error), 
+            async () => {
+              imageUrl = await getDownloadURL(uploadTask.snapshot.ref); 
+              resolve(imageUrl);
+            }
+          );
+        });
+      }
+  
+      const response2 = await fetch('http://localhost:8080/addPost', {
         method: 'POST', 
         headers: {
           'Content-Type' : 'application/json', 
@@ -41,11 +76,23 @@ const Upload = () => {
         body: JSON.stringify(postData),
       });
 
-      if(!response.ok){
-        throw new Error(`Failed to create post: ${response.statusText}`);
+      if(!response2.ok){
+        throw new Error(`Failed to create post: ${response2.statusText}`);
       }
 
-      const result = await response.json(); 
+      const result = await response2.json();
+      const userRef = doc(database, "posts");
+      console.log('Image URL:', imageUrl); 
+      await setDoc(userRef, {
+          name: postData.name,
+          description: postData.description,
+          recipeLink: postData.recipeLink,
+          timeHours: postData.timeHours,
+          timeMin: postData.timeMin,
+          stars: postData.stars,
+          image: imageUrl,
+          date: new Date(),
+      });
       console.log('Post created successfully:', result); 
       return result; 
 
@@ -165,7 +212,7 @@ const Upload = () => {
             timeHours,
             timeMin,
             stars,
-            image: image ? URL.createObjectURL(image) : null, // Optional: send image preview URL
+            image : image ? URL.createObjectURL(image) : null,
           })
         }
       >

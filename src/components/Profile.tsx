@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import EditProfile from './editProfile'
+import EditProfile from './EditProfile'
+
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({

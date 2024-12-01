@@ -5,64 +5,82 @@ import Upload from "./components/Upload";
 import Feed from "./components/Feed";
 import Profile from "./components/Profile";
 import Login from "./components/Login";
-import { ArrowRight } from "lucide-react";
-import {useState} from "react"; 
-import { signIn } from './auth/auth';
-
-
+import { ArrowRight, LogOut } from "lucide-react";
+import { useState } from "react";
+import { useAuth } from "./auth/AuthUserProvider";
+import { signIn, signOut } from "./auth/auth";
 
 function App() {
+  const [showLoading, setShowLoading] = useState(false);
+  const { user } = useAuth();
+  const {authLoading} = useAuth();
 
-  const [showWelcome, setShowWelcome] = useState(true); 
-
-  // const handleExitClick = () => {
-  //       setShowWelcome(false); 
-  // }  
-
-  const handleArrowClick = () => {
-    const user = signIn();
-    if(user != null) {
-      setShowWelcome(false); 
+  const handleArrowClick = async () => {
+    setShowLoading(true);
+    try {
+      signIn();
+      setShowLoading(false);
+    } catch (error) {
+      console.error("Sign-in failed:", error);
+      setShowLoading(false);
     }
+  };
 
-} 
+  const handleLogOut = async () => {
+    try {
+      signOut();
+      setShowLoading(false);
+    } catch (error) {
+      console.error("Sign-out failed:", error);
+      setShowLoading(false);
+    }
+  };
+
+  if (authLoading) {
+    return <div className="loadingPage">Loading...</div>; // Show a loading screen until the auth check is done
+  }
 
   return (
     <>
-
-    <div>
-      {showWelcome && (
-      <div className="welcomePopup"> 
-        <h1 id="welcomeHeader" className="cssanimation sequence fadeInBottom">Welcome to SavorStats!</h1>
-        <div className="welcomeExit">
-          <p>get started</p>
-          {/* <ArrowRight onClick={handleExitClick}/> */}
-          <ArrowRight onClick={handleArrowClick}/>
-        </div>
+      <div>
+        {!user && !showLoading && (  //if a user is not signed in, show welome pop up
+          <div className="welcomePopup">
+            <h1 id="welcomeHeader" className="cssanimation sequence fadeInBottom">
+              Welcome to SavorStats!
+            </h1>
+            <div className="welcomeExit">
+              <p>Get started</p>
+              <ArrowRight onClick={handleArrowClick} />
+            </div>
+          </div>
+        )}
       </div>
-       )}
-    </div>
 
-    <div>
-      {!showWelcome && (
-        <>
-        <div className="header">
-        <h1>SavorStats</h1>
-        <h3>Save your stats!</h3>
+      <div>
+        {showLoading && !user && (  //blank screen for google sign in pop up
+          <div className="loadingPage">
+          </div>
+        )}
       </div>
-        <NavBar />
-        <div>
-          <Routes>
-            <Route path="/" element={<Feed />} />
-            <Route path="/upload" element={<Upload />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </div>
-        </>
-      )}
-    </div>
-    
+
+      <div>
+        {user && !showLoading && (  //if there is a user, allow them to access SavorStates
+          <>
+            <div className="header">
+              <h1>SavorStats</h1>
+              <h3>Save your stats!</h3>
+              <LogOut onClick={handleLogOut} />
+            </div>
+            <NavBar />
+            <Routes>
+              <Route path="/" element={<Feed />} />
+              <Route path="/upload" element={<Upload />} />
+              <Route path="/profile" element={<Profile />} />
+             <Route path="/login" element={<Login />} />
+            </Routes>
+          </>
+        )}
+      </div>
     </>
   );
 }
