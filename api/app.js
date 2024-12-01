@@ -19,6 +19,24 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
+//verify firebase ID token
+async function authenticateToken(req, res, next) {
+  const idToken = req.headers.authorization?.split('Bearer ')[1];
+
+  if (!idToken) {
+    return res.status(401).send({ error: "Authorization token is required" });
+  }
+
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    req.user = { uid: decodedToken.uid };
+    next();
+  } catch (error) {
+    console.error("Error verifying token:", error);
+    res.status(403).send({ error: "Invalid or expired token" });
+  }
+}
+
 
 //for creating new account 
 app.post('/signup', (req, res) => {
@@ -96,7 +114,7 @@ app.put('/users/:userId', async (req, res) => {
       message: 'profile updated successfully!'
     });
   } catch (error){
-    console.log('Error updating profile', error);
+    console.error('Error updating profile', error);
     res.status(500).json({error: 'Error updating profile'});
   }
   
@@ -157,27 +175,30 @@ app.post('/addPost', async (req, res) => {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
-    const postsCollectionRef = db.collection("users").doc(userId).collection("posts");
-    // const postID = postRef.uid; // Firestore generated ID
-
+    //create postID 
+    const postId = db.collection('posts').doc().id;
+    //get uid 
+    const userId = req.user.uid; 
+    
     // Create a new document in the 'posts' collection
-    const newPost = await postsCollectionRef.add({
-      postId, 
-      description,
-      image,
-      name,
-      recipeLink,
-      stars,
-      timeHours,
-      timeMin,
-      uid,
-    });
+    const newPost = {
+      postId: postId, 
+      desc: description,
+      img: image,
+      name: name,
+      link: recipeLink,
+      stars: stars,
+      hours: timeHours,
+      mins: timeMin,
+    };
 
+    // save into user's post collection 
+    await db.collection('users').doc(userId).collection('posts').doc(postId).set(newPost);
 
     // Respond with the document ID
     return res.status(201).json({ message: 'Post added successfully!', postId: postRef.id });
   } catch (error) {
-    console.log('Error adding post:', error);
+    console.error('Error adding post:', error);
     res.status(500).json({ error: 'Internal server error.' });
   }
 });

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, ChangeEvent } from "react";
 import { Star } from "lucide-react";
+import { getAuth } from "firebase/auth";
 
 const Upload = () => {
   const [name, setName] = useState("");
@@ -31,14 +32,24 @@ const Upload = () => {
     }
   };
 
-  async function createPost(postData){
-    try {
-      const response = await fetch('http://localhost:8080/addPost', {
-        method: 'POST', 
-        headers: {
-          'Content-Type' : 'application/json', 
-        }, 
-        body: JSON.stringify(postData),
+async function createPost(postData){
+  try {
+    //get Firebase auth token 
+    const auth = getAuth(); 
+    const user = auth.currentUser; 
+
+    if(!user){
+      throw new Error("User is not authenticated");
+    }
+    const idToken = await user.getIdToken(); 
+
+    const response = await fetch('http://localhost:8080/addPost', {
+      method: 'POST', 
+      headers: {
+        'Content-Type' : 'application/json', 
+        'Authorization' : `Bearer ${idToken}`,
+      }, 
+      body: JSON.stringify(postData),
       });
 
       if(!response.ok){

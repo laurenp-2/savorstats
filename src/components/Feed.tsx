@@ -50,7 +50,7 @@ const Feed = () => {
                 >
                   View Recipe
                 </a>
-                <p>⭐ {post.stars}</p>
+                <p>{post.stars}</p>
                 <p>
                   Time: {post.timeHours}h {post.timeMin}m
                 </p>
