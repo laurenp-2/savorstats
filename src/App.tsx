@@ -7,14 +7,25 @@ import Profile from "./components/Profile";
 import Login from "./components/Login";
 import { ArrowRight } from "lucide-react";
 import {useState} from "react"; 
+import { signIn } from './auth/auth';
+
+
 
 function App() {
 
   const [showWelcome, setShowWelcome] = useState(true); 
 
-    const handleExitClick = () => {
-        setShowWelcome(false); 
+  // const handleExitClick = () => {
+  //       setShowWelcome(false); 
+  // }  
+
+  const handleArrowClick = () => {
+    const user = signIn();
+    if(user != null) {
+      setShowWelcome(false); 
     }
+
+} 
 
   return (
     <>
@@ -25,11 +36,13 @@ function App() {
         <h1 id="welcomeHeader" className="cssanimation sequence fadeInBottom">Welcome to SavorStats!</h1>
         <div className="welcomeExit">
           <p>get started</p>
-          <ArrowRight onClick={handleExitClick}/>
+          {/* <ArrowRight onClick={handleExitClick}/> */}
+          <ArrowRight onClick={handleArrowClick}/>
         </div>
       </div>
        )}
     </div>
+
     <div>
       {!showWelcome && (
         <>
@@ -55,3 +68,5 @@ function App() {
 }
 
 export default App;
+
+

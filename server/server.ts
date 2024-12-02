@@ -17,6 +17,16 @@ app.get('/', (req, res) => {
   res.send('Hello from Express!');
 });
 
+app.post('/addPost', (req, res) => {
+  const postData = req.body;  // Get the data from the request body
+  console.log('Received post data:', postData);  // Log the received data (optional)
+
+  // Here, you would typically save postData to a database, like Firebase
+  // For now, you can just send a success response:
+  res.status(200).json({ message: 'Post created successfully' });
+});
+
+
 // Start the Express server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
