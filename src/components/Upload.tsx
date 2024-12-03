@@ -1,7 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, ChangeEvent } from "react";
 import { Star } from "lucide-react";
+<<<<<<< HEAD
 import { getAuth } from "firebase/auth";
+=======
+import { database } from "../utils/firebase";
+import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { useAuth } from "../auth/AuthUserProvider";
+//import { post } from "node_modules/axios/index.d.cts";
+>>>>>>> main
 
 const Upload = () => {
   const [name, setName] = useState("");
@@ -10,8 +18,10 @@ const Upload = () => {
   const [recipeLink, setRecipeLink] = useState("");
   const [timeHours, setTimeHours] = useState(0);
   const [timeMin, setTimeMin] = useState(0);
-  const [image, setImage] = useState<File | null>(null);
+//  const [image, setImage] = useState<File | null>(null);
   const [hoveredStar, setHoveredStar] = useState(0);
+  const [date, setDate] = useState(null)
+
 
   const reset = () => {
     setName("");
@@ -20,18 +30,57 @@ const Upload = () => {
     setRecipeLink("");
     setTimeHours(0);
     setTimeMin(0);
-    setImage(null);
+  //  setImage(null);
     setHoveredStar(0);
+    setDate(null);
   };
 
-  const uploadImg = async (event: ChangeEvent<HTMLInputElement>) => {
-    //stuff to do when image is uploaded
-    const file = event.target.files?.[0];
-    if (file != null && file.type.startsWith("image/")) {
-      setImage(file);
-    }
-  };
+  interface PostData {
+    name: string;
+    description: string;
+    recipeLink: string;
+    timeHours: number;
+    timeMin: number;
+    stars: number;
+    date: Date | null,
+   // image: string | null;
+  }
+  
 
+  // const uploadImg = async (event: ChangeEvent<HTMLInputElement>) => {
+  //   //stuff to do when image is uploaded
+  //   const file = event.target.files?.[0];
+  //   if (file != null && file.type.startsWith("image/")) {
+  //     setImage(file);
+  //   }
+  // };
+
+  const storage = getStorage();
+
+  const { user } = useAuth();
+
+  async function createPost(postData: PostData){
+    //handles the image being a URL and ensure image is permanently stored in FireStore
+    //  try {
+    //   let imageUrl: string | null = null;
+    //   if (image) {
+    //     const imageRef = ref(storage, `images/${Date.now()}_${image.name}`);
+    //     const uploadTask = uploadBytesResumable(imageRef, image); 
+        
+    //     await new Promise((resolve, reject) => {
+    //       uploadTask.on(
+    //         "state_changed",
+    //         null, 
+    //         (error) => reject(error), 
+    //         async () => {
+    //           imageUrl = await getDownloadURL(uploadTask.snapshot.ref); 
+    //           resolve(imageUrl);
+    //         }
+    //       );
+    //     });
+    //   }
+
+<<<<<<< HEAD
 async function createPost(postData){
   try {
     //get Firebase auth token 
@@ -51,19 +100,40 @@ async function createPost(postData){
       }, 
       body: JSON.stringify(postData),
       });
+=======
+    try {
+      const response = await fetch('http://localhost:8080/addPost', {
+       method: 'POST',
+       headers: {
+         'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({
+            description: postData.description,
+           // image: 'image_url',
+            name: postData.name,
+            recipeLink: postData.recipeLink,
+            stars: postData.stars,
+            timeHours: postData.timeHours,
+            timeMin: postData.timeMin,
+            date: new Date(),
+            userId: user?.uid, 
+        })
+       });
+>>>>>>> main
 
-      if(!response.ok){
-        throw new Error(`Failed to create post: ${response.statusText}`);
+       if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}, message: ${await response.text()}`);
       }
-
-      const result = await response.json(); 
-      console.log('Post created successfully:', result); 
-      return result; 
-
-    } catch (error){
+       const data = await response.json();
+       console.log(data);
+        return data;
+     } 
+     catch (error) {
       console.error('Error creating post: ', error);
-    }
+      } 
   }
+
+  
 
   const renderStars = () => {
     return [1, 2, 3, 4, 5].map((rating) => (
@@ -141,9 +211,9 @@ async function createPost(postData){
             id="uploadImgInput"
             accept="image/*"
             type="file"
-            onChange={uploadImg}
+           // onChange={uploadImg}
           />
-          {!image ? (
+          {/* {!image ? (
             <>
               <label htmlFor="uploadImgInput" id="uploadImgLabel">
                 Upload Image
@@ -163,7 +233,7 @@ async function createPost(postData){
                 Change Image
               </label>
             </div>
-          )}
+          )} */}
         </div>
 
         <button
@@ -176,7 +246,8 @@ async function createPost(postData){
             timeHours,
             timeMin,
             stars,
-            image: image ? URL.createObjectURL(image) : null, // Optional: send image preview URL
+            date: new Date(),
+        //    image : image ? URL.createObjectURL(image) : null,
           })
         }
       >

@@ -48,13 +48,23 @@ h3 {
 
 .header {
   display: flex;
-  gap: 1em;
+  justify-content: space-between;
+  align-items: end;
   margin: 0em;
   padding: 0em;
 }
 
-.header h3 {
-  line-height: 3.5em;
+
+.left {
+  display: flex;
+  gap: 1em;
+  align-items: end;
+}
+
+.logOut {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
 }
 
 button {
@@ -109,7 +119,7 @@ input:hover {
 .navBar {
   background-color: #ffbc64;
   border-radius: 8px;
-  padding: 1em; 
+  padding: 1em;
   margin: auto;
 }
 
@@ -144,8 +154,8 @@ input:hover {
 
 .starIcon {
   stroke-width: 0.5px;
-  width: 30px;  
-  height: 30px; 
+  width: 30px;
+  height: 30px;
   width: 30px;
   height: 30px;
 }
@@ -166,7 +176,7 @@ input:hover {
   gap: 2vw;
   flex-wrap: wrap;
   width: 100%;
-  
+
   width: 100%;
 }
 
@@ -196,7 +206,6 @@ input:hover {
 #uploadButton {
   width: 100%;
   width: 100%;
-
 }
 
 #uploadImgLabel {
@@ -281,7 +290,9 @@ input:hover {
   gap: 2em;
 }
 
-.updateUsername, .updateBio, .updateProfPic {
+.updateUsername,
+.updateBio,
+.updateProfPic {
   display: flex;
   gap: 1em;
 }
@@ -293,12 +304,12 @@ input:hover {
 
 .updateProfButtons {
   display: flex;
-  gap: 2em; 
+  gap: 2em;
 }
 
 #profilePicture {
-  width: 100px; 
-  height: 100px; 
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid #f0a800;
@@ -357,7 +368,6 @@ input:hover {
   text-align: center;
 }
 
-
 .welcomePopup {
   display: flex;
   flex-direction: column;
@@ -369,28 +379,31 @@ input:hover {
   transform: translateX(-50%) translateY(-50%);
 }
 
-
 .welcomeExit {
   display: flex;
   align-items: center;
   font-size: 20px;
   margin-top: 0;
-  padding: 0; 
+  padding: 0;
   margin-left: 80%;
   margin-right: 5%;
-
 }
 
-.fadeInBottom { animation-name: fadeInBottom }
+.fadeInBottom {
+  animation-name: fadeInBottom;
+}
 @keyframes fadeInBottom {
-    from {
-        opacity: 0;
-        transform: translateY(100%);
-    }
-    to { opacity: 1 }
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.cssanimation, .cssanimation span {
+.cssanimation,
+.cssanimation span {
   animation-duration: 1s;
   animation-fill-mode: both;
 }
