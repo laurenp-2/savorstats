@@ -38,12 +38,19 @@ h1 {
 }
 
 h2 {
+  font-weight: 300;
   color: #f2a053;
   font-size: 2.3em;
 }
 
 h3 {
   font-weight: lighter;
+}
+
+.fixedHeader {
+  position: sticky;
+  top: 20px;
+  background-color: white;
 }
 
 .header {
@@ -66,6 +73,8 @@ h3 {
   align-items: center;
   gap: 0.5em;
 }
+
+
 
 button {
   border-radius: 8px;
@@ -406,4 +415,49 @@ input:hover {
 .cssanimation span {
   animation-duration: 1s;
   animation-fill-mode: both;
+}
+
+#loadingText {
+  padding: 2em;
+}
+
+.signInPrompt {
+  margin: 10em;
+  gap: 1em;
+}
+
+.postCard {
+  margin: 1em; 
+  display: flex;
+  gap: 2em; 
+  border-radius: 8px;
+  border: 1px solid orange;
+  padding: 1em;
+}
+
+.postCardInfo {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  justify-content: space-between;
+  align-items: start;
+  height: 208px;
+}
+
+.postCardInfo p, h3, a {
+  text-align: start;
+  margin: 0px;
+  padding: 0em;
+}
+
+.postCardInfoFirstLine {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2em;
+}
+
+#postImage {
+  width: 20%;
+  height: 20%;
 }
