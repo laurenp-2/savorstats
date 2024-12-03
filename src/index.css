@@ -469,7 +469,7 @@ input:hover {
 
 #filledPostStars {
   fill: #ffbc64;
-  border-color: transparent;
+  color: #ffbc64;
   stroke-width: 0.5px;
   width: 30px;
   height: 30px;

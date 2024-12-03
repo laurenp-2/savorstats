@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import EditProfile from './editProfile'
+import EditProfile from './editProfile';
 import { useAuth } from "../auth/AuthUserProvider";
+import { Star } from "lucide-react";
 
 interface Post {
   id: string,
@@ -88,16 +89,35 @@ const Profile = () => {
             <h3>My Posts</h3>
             {posts.length > 0 ? (
               posts.map((post) => (
-                <div key ={post.id} className = "postCard">
-                  <img src={post.image} className = "postImage" /> 
-                  <h4>{post.name}</h4>
-                  <p>{post.description}</p>
-                  <a href = {post.recipeLink} target ="_blank" rel = "noopener noreferrer">
-                    View Recipe 
-                  </a>
-                  <p>{post.stars}</p>
-                  <p> {post.timeHours}h {post.timeMin}m</p>
+                <div key={post.id} className="postCard">
+                <img
+                  src={post.image || "https://via.placeholder.com/150"}
+                  alt={post.name}
+                  id="postImage"
+                />
+                <div className="postCardInfo">
+                    <div className="postCardInfoFirstLine"> 
+                      <h3>Name:{post.name}</h3>
+                      
+                      <div className="starRating">
+            
+                      {Array.from({ length: post.stars }, (_, index) => (
+                        <Star key={index}  size={24} className="starIcon" id="filledPostStars"/>
+                      ))}
+                     
+                      {Array.from({ length: 5 - post.stars }, (_, index) => (
+                        <Star key={post.stars + index} size={24} className="starIcon" id="unfilledPostStars"/>
+                      ))}
+                    </div>
+                      <p>Time: {post.timeHours}h {post.timeMin}m</p>
+                    </div>
+                    <p>Description:{post.description}</p>
+                    <a href={post.recipeLink} target="_blank" rel="noopener noreferrer">
+                        View Recipe
+                      </a>
                   </div>
+                
+              </div>
               ))
             ) : (
               <p>No posts to display.</p>

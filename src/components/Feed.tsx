@@ -74,13 +74,13 @@ const Feed: React.FC<FeedProps> = ({ signedIn, onSignIn }) => {
                       <h3>Name:{post.name}</h3>
                       
                       <div className="starRating">
-                      {/* Render filled stars */}
+            
                       {Array.from({ length: post.stars }, (_, index) => (
-                        <Star key={index} color="gold" size={24} className="starIcon" id="filledPostStars"/>
+                        <Star key={index}  size={24} className="starIcon" id="filledPostStars"/>
                       ))}
-                      {/* Render unfilled stars */}
+                     
                       {Array.from({ length: 5 - post.stars }, (_, index) => (
-                        <Star key={post.stars + index} color="lightgray" size={24} className="starIcon" id="unfilledPostStars"/>
+                        <Star key={post.stars + index} size={24} className="starIcon" id="unfilledPostStars"/>
                       ))}
                     </div>
                       <p>Time: {post.timeHours}h {post.timeMin}m</p>

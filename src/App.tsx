@@ -11,7 +11,7 @@ import { signIn, signOut } from "./auth/auth";
 
 function App() {
   const [showWelcome, setShowWelcome] = useState(true);
-  const { user } = useAuth(); // Get user from the context
+  const { user } = useAuth(); 
   const navigate = useNavigate();
 
   const handleArrowClick = () => {
@@ -45,7 +45,6 @@ function App() {
 
   return (
     <>
-      {/* Welcome Popup - Only shows if the user is not signed in */}
       <div>
         {showWelcome && !user && (
           <div className="welcomePopup">
@@ -62,7 +61,7 @@ function App() {
           </div>
         )}
       </div>
-      {/* Main App Content - Shows once the user is signed in */}
+    
       <div>
         {!showWelcome && (
           <>
@@ -87,7 +86,7 @@ function App() {
               <Routes>
                 <Route
                   path="/"
-                  element={<Feed signedIn={!!user} onSignIn={handleSignIn} />} // Pass signedIn based on user
+                  element={<Feed signedIn={!!user} onSignIn={handleSignIn} />} 
                 />
                 <Route path="/upload" element={<Upload />} />
                 <Route path="/profile" element={<Profile />} />
