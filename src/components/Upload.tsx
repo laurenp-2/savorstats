@@ -16,7 +16,6 @@ const Upload = () => {
   const [timeMin, setTimeMin] = useState(0);
 //  const [image, setImage] = useState<File | null>(null);
   const [hoveredStar, setHoveredStar] = useState(0);
-  const [pid, setPid] = useState("");
   const [date, setDate] = useState(null)
 
 
@@ -30,7 +29,6 @@ const Upload = () => {
   //  setImage(null);
     setHoveredStar(0);
     setDate(null);
-    setPid("")
   };
 
   interface PostData {
@@ -40,7 +38,6 @@ const Upload = () => {
     timeHours: number;
     timeMin: number;
     stars: number;
-    pid: string, 
     date: Date | null,
    // image: string | null;
   }
@@ -78,44 +75,7 @@ const Upload = () => {
     //       );
     //     });
     //   }
-  //try {
-    //   const response2 = await fetch('http://localhost:8080/addPost', {
-    //     method: 'POST', 
-    //     headers: {
-    //       'Content-Type' : 'application/json', 
-    //     }, 
-    //     body: JSON.stringify(postData),
-    //   });
 
-    //   if(!response2.ok){
-    //     throw new Error(`Failed to create post: ${response2.statusText}`);
-    //   }
-
-    //   const result = await response2.json();
-
-    //   if(user != null) {
-    //   const database = getFirestore(); 
-    //   const userDb = doc(database, "users", user.uid);
-    //   const postCollection = collection(userDb, "posts");
-    //   const newPostRef = doc(postCollection);
-    // //  console.log('Image URL:', imageUrl); 
-    //   await setDoc(newPostRef, {
-    //       name: postData.name,
-    //       description: postData.description,
-    //       recipeLink: postData.recipeLink,
-    //       timeHours: postData.timeHours,
-    //       timeMin: postData.timeMin,
-    //       stars: postData.stars,
-    //      // image: imageUrl,
-    //       date: new Date(),
-    //   });
-    // }
-    //   // console.log('Post created successfully:', result); 
-    //   // return result; 
-
-    // } catch (error){
-    //   console.error('Error creating post: ', error);
-    // }
     try {
       const response = await fetch('http://localhost:8080/addPost', {
        method: 'POST',
@@ -131,9 +91,10 @@ const Upload = () => {
             timeHours: postData.timeHours,
             timeMin: postData.timeMin,
             date: new Date(),
-            pid: postData.pid,
+            userId: user?.uid, 
         })
        });
+
        if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}, message: ${await response.text()}`);
       }
@@ -259,7 +220,6 @@ const Upload = () => {
             timeHours,
             timeMin,
             stars,
-            pid,
             date: new Date(),
         //    image : image ? URL.createObjectURL(image) : null,
           })
