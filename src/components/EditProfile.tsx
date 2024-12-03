@@ -5,8 +5,6 @@ import { AuthUserProvider, useAuth } from "../auth/AuthUserProvider";
 import { auth, database } from "../utils/firebase";
 
 
-  
-
 interface EditProfileProps {
   profileData: {
     username: string;

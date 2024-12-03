@@ -1,49 +1,47 @@
 import { User } from "firebase/auth";
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { auth } from "../utils/firebase";
-//import { useToast } from "@/hooks/use-toast";
-//import { toast } from "@/hooks/use-toast";
 
 type AuthData = {
   user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<{ user: User | null }>>;
+  authLoading: boolean;
 };
 
-const AuthUserContext = createContext<AuthData>({ user: null });
+const AuthUserContext = createContext<AuthData | undefined>(undefined);
 
-
-export const AuthUserProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const [user, setUser] = useState<AuthData>({ user: null });
-  //const { toast } = useToast();
+export const AuthUserProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<{ user: User | null }>({ user: null });
+  const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    auth.onAuthStateChanged(async (userAuth) => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
       if (userAuth) {
         setUser({ user: userAuth });
-        // toast({
-        //   title: `Welcome ${userAuth.displayName}`,
-        //   description: "You have successfully signed in.",
-        // });
       } else {
         setUser({ user: null });
       }
+      setAuthLoading(false); 
     });
+
+    return () => unsubscribe(); // Cleanup on unmount
   }, []);
 
+  if (authLoading) {
+    return <div>Loading...</div>; 
+  }
+
   return (
-    <AuthUserContext.Provider value={user}>
-    {children}
+    <AuthUserContext.Provider value={{ user: user.user, setUser, authLoading }}>
+      {children}
     </AuthUserContext.Provider>
   );
 };
 
 export const useAuth = () => {
   const context = useContext(AuthUserContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within a AuthUserProvider");
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthUserProvider");
   }
   return context;
 };
