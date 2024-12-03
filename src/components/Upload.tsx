@@ -197,7 +197,9 @@ const Upload = () => {
         //    image : image ? URL.createObjectURL(image) : null,
           });
           reset();
-        }}
+        }
+        }
+
       >
         Upload
       </button>

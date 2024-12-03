@@ -28,6 +28,7 @@ const Feed: React.FC<FeedProps> = ({ signedIn, onSignIn }) => {
         throw new Error(`Error fetching posts: ${response.statusText}`);
       }
       const data = await response.json();
+      console.log(data);
       setPosts(data);
     } catch (error) {
       console.error("Error fetching posts2:", error);
