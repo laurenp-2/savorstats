@@ -1,17 +1,29 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import EditProfile from './EditProfile'
+import { useAuth } from "../auth/AuthUserProvider";
 
+interface Post {
+  id: string,
+  name: string, 
+  image: string | undefined,
+  description: string,
+  recipeLink: string,
+  stars: number, 
+  timeHours: number,
+  timeMin: number
+}
 
 const Profile = () => {
+  const { user } = useAuth();
   const [profileData, setProfileData] = useState({
-    username: `user${Math.random().toString(36).substring(2, 8)}`, //generate random username like userpzm7zg, need to check if someone doesn't have this username Tho
+    username: user?.displayName || "Default Username",
     bio: "I love cooking!",
     profilePic: null as File | null,
   });
 
   const [isEditing, setIsEditing] = useState(false);
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   const handleUpdateProfile = (
     updatedData: React.SetStateAction<{
@@ -75,7 +87,7 @@ const Profile = () => {
             {posts.length > 0 ? (
               posts.map((post) => (
                 <div key ={post.id} className = "postCard">
-                  <img src={post.image} className = "postImage" />
+                  <img src={post.image} className = "postImage" /> 
                   <h4>{post.name}</h4>
                   <p>{post.description}</p>
                   <a href = {post.recipeLink} target ="_blank" rel = "noopener noreferrer">
