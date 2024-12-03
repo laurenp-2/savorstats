@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Star } from "lucide-react";
 
 interface FeedProps {
   signedIn: boolean;
@@ -72,7 +73,16 @@ const Feed: React.FC<FeedProps> = ({ signedIn, onSignIn }) => {
                     <div className="postCardInfoFirstLine"> 
                       <h3>Name:{post.name}</h3>
                       
-                      <p>⭐ {post.stars}</p>
+                      <div className="starRating">
+                      {/* Render filled stars */}
+                      {Array.from({ length: post.stars }, (_, index) => (
+                        <Star key={index} color="gold" size={24} className="starIcon" id="filledPostStars"/>
+                      ))}
+                      {/* Render unfilled stars */}
+                      {Array.from({ length: 5 - post.stars }, (_, index) => (
+                        <Star key={post.stars + index} color="lightgray" size={24} className="starIcon" id="unfilledPostStars"/>
+                      ))}
+                    </div>
                       <p>Time: {post.timeHours}h {post.timeMin}m</p>
                     </div>
                     <p>Description:{post.description}</p>
