@@ -57,13 +57,19 @@ function App() {
         {!showWelcome && (
           <>
             <div className="header">
+              <div className="left">
               <h1>SavorStats</h1>
               <h3>Save your stats!</h3>
-            </div>
-            <div className="logOut">
+              </div>
+              {user && ( 
+                <div className="logOut">
               <p>Log Out</p>
               <LogOut onClick={handleLogout} />
             </div>
+          )}
+             
+            </div>
+            
            
             <NavBar />
             <div>
