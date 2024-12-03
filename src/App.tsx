@@ -71,7 +71,7 @@ function App() {
             </div>
             
            
-            <NavBar signedIn={user}/>
+            <NavBar signedIn={user != null}/>
             <div>
               <Routes>
                 <Route
