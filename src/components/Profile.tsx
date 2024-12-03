@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import EditProfile from './editProfile';
+import EditProfile from './EditProfile';
 import { useAuth } from "../auth/AuthUserProvider";
 import { Star } from "lucide-react";
 
@@ -74,10 +74,10 @@ const Profile = () => {
             <div className="profileColOne">
                 
               <img id="profilePicture"
-                src={profileData.profilePic ? URL.createObjectURL(profileData.profilePic) : "pfpCook.jpg"}
+                src={profileData.profilePic ? URL.createObjectURL(profileData.profilePic) : "assets/pfpCook.jpg"}
 
               />
-              <button onClick={() => setIsEditing(true)}>edit profile</button>
+              {/* <button onClick={() => setIsEditing(true)}>edit profile</button>  */}
             </div>
 
             <div className="profileColTwo">
@@ -87,18 +87,18 @@ const Profile = () => {
           </div>
           {/*Render posts */}
           <div className="profileFeed">
-            <h3>My Posts</h3>
+            <h3 id="myPostsLabel">My Posts</h3>
             {posts.length > 0 ? (
               posts.map((post) => (
                 <div key={post.id} className="postCard">
                 <img
-                  src={post.image || "https://via.placeholder.com/150"}
+                  src={post.image || "assets/bakingplaceholder.jpg"}
                   alt={post.name}
                   id="postImage"
                 />
                 <div className="postCardInfo">
                     <div className="postCardInfoFirstLine"> 
-                      <h3>Name:{post.name}</h3>
+                      <h3>{post.name}</h3>
                       
                       <div className="starRating">
             

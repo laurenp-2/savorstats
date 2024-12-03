@@ -65,13 +65,13 @@ const Feed: React.FC<FeedProps> = ({ signedIn, onSignIn }) => {
             posts.map((post) => (
               <div key={post.id} className="postCard">
                 <img
-                  src={post.image || "https://via.placeholder.com/150"}
+                  src={post.image || "assets/bakingplaceholder.jpg"}
                   alt={post.name}
                   id="postImage"
                 />
                 <div className="postCardInfo">
                     <div className="postCardInfoFirstLine"> 
-                      <h3>Name:{post.name}</h3>
+                      <h3>{post.name}</h3>
                       
                       <div className="starRating">
             
@@ -85,7 +85,7 @@ const Feed: React.FC<FeedProps> = ({ signedIn, onSignIn }) => {
                     </div>
                       <p>Time: {post.timeHours}h {post.timeMin}m</p>
                     </div>
-                    <p>Description:{post.description}</p>
+                    <p>{post.description}</p>
                     <a href={post.recipeLink} target="_blank" rel="noopener noreferrer">
                         View Recipe
                       </a>

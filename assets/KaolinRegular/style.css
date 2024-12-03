@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Kaolin';
+    src: local('Kaolin Regular'), local('Kaolin-Regular'),
+        url('KaolinRegular.woff2') format('woff2'),
+        url('KaolinRegular.woff') format('woff'),
+        url('KaolinRegular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }

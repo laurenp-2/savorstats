@@ -69,7 +69,7 @@ function App() {
             <div className="fixedHeader">
               <div className="header">
                 <div className="left">
-                  <h1>SavorStats</h1>
+                  <h1>savorstats</h1>
                   <h3>Save your stats!</h3>
                 </div>
                 {user && (
