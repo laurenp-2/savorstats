@@ -71,7 +71,7 @@ function App() {
             </div>
             
            
-            <NavBar />
+            <NavBar signedIn={user}/>
             <div>
               <Routes>
                 <Route
