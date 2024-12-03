@@ -48,7 +48,7 @@ const Feed: React.FC<FeedProps> = ({ signedIn, onSignIn }) => {
     <>
       {/* Sign in prompt if not signed in */}
       {!signedIn && (
-        <div>
+        <div className="signInPrompt">
           <p>Sign in to view your feed!</p>
           <button onClick={onSignIn}>Sign in with Google</button>
         </div>
@@ -56,9 +56,8 @@ const Feed: React.FC<FeedProps> = ({ signedIn, onSignIn }) => {
       {/* Feed content if signed in */}
       {signedIn && (
         <div className="feed">
-          {loading && <p>Loading...</p>}
+          {loading && <p id="loadingText">Loading...</p>}
           {error && <p>{error}</p>}
-          <h2>Feed</h2>
           {posts.length === 0 ? (
             <p>No posts available</p>
           ) : (
@@ -67,16 +66,21 @@ const Feed: React.FC<FeedProps> = ({ signedIn, onSignIn }) => {
                 <img
                   src={post.image || "https://via.placeholder.com/150"}
                   alt={post.name}
-                  className="postImage"
+                  id="postImage"
                 />
-                <h3>{post.name}</h3>
-                {/* <h3>{post.id}</h3> */}
-                <p>{post.description}</p>
-                <a href={post.recipeLink} target="_blank" rel="noopener noreferrer">
-                  View Recipe
-                </a>
-                <p>⭐ {post.stars}</p>
-                <p>Time: {post.timeHours}h {post.timeMin}m</p>
+                <div className="postCardInfo">
+                    <div className="postCardInfoFirstLine"> 
+                      <h3>Name:{post.name}</h3>
+                      
+                      <p>⭐ {post.stars}</p>
+                      <p>Time: {post.timeHours}h {post.timeMin}m</p>
+                    </div>
+                    <p>Description:{post.description}</p>
+                    <a href={post.recipeLink} target="_blank" rel="noopener noreferrer">
+                        View Recipe
+                      </a>
+                  </div>
+                
               </div>
             ))
           )}

@@ -6,9 +6,8 @@ import Feed from "./components/Feed";
 import Profile from "./components/Profile";
 import { ArrowRight, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useAuth } from "./auth/AuthUserProvider"; 
-import { signIn, signOut } from './auth/auth';
-
+import { useAuth } from "./auth/AuthUserProvider";
+import { signIn, signOut } from "./auth/auth";
 
 function App() {
   const [showWelcome, setShowWelcome] = useState(true);
@@ -18,7 +17,6 @@ function App() {
   const handleArrowClick = () => {
     setShowWelcome(false);
   };
-
 
   const handleSignIn = async () => {
     await signIn(); // Handle Google sign-in
@@ -51,7 +49,10 @@ function App() {
       <div>
         {showWelcome && !user && (
           <div className="welcomePopup">
-            <h1 id="welcomeHeader" className="cssanimation sequence fadeInBottom">
+            <h1
+              id="welcomeHeader"
+              className="cssanimation sequence fadeInBottom"
+            >
               Welcome to SavorStats!
             </h1>
             <div className="welcomeExit">
@@ -65,22 +66,23 @@ function App() {
       <div>
         {!showWelcome && (
           <>
-            <div className="header">
-              <div className="left">
-              <h1>SavorStats</h1>
-              <h3>Save your stats!</h3>
+          
+            <div className="fixedHeader">
+              <div className="header">
+                <div className="left">
+                  <h1>SavorStats</h1>
+                  <h3>Save your stats!</h3>
+                </div>
+                {user && (
+                  <div className="logOut">
+                    <p>Log Out</p>
+                    <LogOut onClick={handleLogout} />
+                  </div>
+                )}
               </div>
-              {user && ( 
-                <div className="logOut">
-              <p>Log Out</p>
-              <LogOut onClick={handleLogout} />
+              <NavBar signedIn={user != null} />
             </div>
-          )}
-             
-            </div>
-            
-           
-            <NavBar signedIn={user != null}/>
+
             <div>
               <Routes>
                 <Route
