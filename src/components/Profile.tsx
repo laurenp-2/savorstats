@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import EditProfile from './EditProfile'
+import EditProfile from './editProfile'
 import { useAuth } from "../auth/AuthUserProvider";
 
 interface Post {

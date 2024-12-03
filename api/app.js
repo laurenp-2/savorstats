@@ -1,8 +1,8 @@
-
 import express from 'express';
 import cors from 'cors'; 
 import admin from 'firebase-admin';
 import serviceAccount from './ServiceAccountKey.json' assert { type: 'json' };
+import { doc, setDoc } from "firebase/firestore"; 
 
 
 const app = express();
@@ -57,50 +57,6 @@ app.post('/signup', async(req, res) => {
   }
 });
 
-// //updating profile 
-// app.put('/users/:userId', async (req, res) => {
-//   const userId = req.params.uid; 
-//   const {username, bio, profilePic} = req.body; 
-
-//   //check if anything was edited 
-//   if(!username && !bio && !profilePic){
-//     return res.status(400).json({error: 'no changes made'});
-//   }
-
-//   try {
-//     const db = admin.firestore();
-//     //change 'users' when get firestore set up and category names 
-//     const userRef = db.collection('users').doc(uid);
-
-//     //check if username is unique
-
-//     if(username){
-//       const userCheck = await db.collection('users').where('username', '==', username);
-//       if(!usernameSnapshot.empty){
-//         //make sure the username is someone elses and they're not just using the same one
-//         existingUser = userCheck.docs[0].id; 
-//         if(existingUser !== userId){
-//           return res.status(400).json({error: 'Username is already taken'});
-//         }
-//       }
-//     }
-//     //update data 
-//     const updates = {}
-//     if (username) updates.username = username; 
-//     if (bio) updates.bio = bio; 
-//     if (profilePic) updates.profilePic = profilePic; 
-
-//     await userRef.update(updates);
-
-//     res.status(200).json({
-//       message: 'profile updated successfully!'
-//     });
-//   } catch (error){
-//     console.log('Error updating profile', error);
-//     res.status(500).json({error: 'Error updating profile'});
-//   }
-  
-// });
 
 //updating profile 
 app.put('/users/:userId', async (req, res) => {
@@ -202,11 +158,15 @@ app.post('/addPost', async (req, res) => {
     }
 
       const db = admin.firestore();
-      const userDocRef = db.collection('users').doc(userId);  // Reference to a specific user's document
-      const postCollection = userDocRef.collection('posts');   // Create a 'posts' sub-collection for the user
-      const newPostRef = postCollection.doc();  // Auto-generate ID for the new post
+      const userDocRef = db.collection('users').doc(userId);  // reference this user's document
+      const postCollection = userDocRef.collection('posts');   //create a 'posts' sub-collection for user
+      const newPostRef = postCollection.doc();  // auto-generates ID for new post
       const newPost = { ...req.body, postId: newPostRef.id };
       await newPostRef.set(newPost);
+
+      const globalPostRef = db.collection('posts'); //adds to global posts collection
+      await globalPostRef.doc(newPostRef.id).set(newPost);
+      
 
     return res.status(201).json({ message: 'Post added successfully!', postId: newPostRef.id });
     } catch (error) {
@@ -256,4 +216,7 @@ app.get('/feed', async (req, res) =>{
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+<<<<<<< HEAD
 
+=======
+>>>>>>> firebasestuff
