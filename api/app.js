@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable no-undef */
 import express from 'express';
 import cors from 'cors'; 
 import admin from 'firebase-admin';
 import serviceAccount from './ServiceAccountKey.json' assert { type: 'json' };
+import { doc, setDoc } from "firebase/firestore"; 
 
 
 const app = express();
@@ -11,6 +10,7 @@ const port = 8080;
 
 app.use(express.json());
 app.use(cors());
+
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -58,7 +58,8 @@ app.post('/signup', async(req, res) => {
   }
 });
 
-//Update Profile
+
+//updating profile 
 app.put('/users/:userId', async (req, res) => {
   const userId = req.params.userId;
   const { username, bio } = req.body;
@@ -68,18 +69,28 @@ app.put('/users/:userId', async (req, res) => {
   }
 
   try {
+    const db = admin.firestore();
+    //change 'users' when get firestore set up and category names 
     const userRef = db.collection('users').doc(userId);
 
-    if (username) {
-      const usernameCheck = await db.collection('users').where('username', '==', username).get();
-      if (!usernameCheck.empty) {
-        return res.status(400).json({ error: 'Username is already taken' });
+    //check if username is unique
+    const usernameSnapshot = await userRef.get();
+
+    if(username){
+      const userCheck = await db.collection('users').where('username', '==', username);
+      if(!usernameSnapshot.empty){
+        //make sure the username is someone elses and they're not just using the same one
+        const existingUser = userCheck.docs[0].id; 
+        if(existingUser !== userId){
+          return res.status(400).json({error: 'Username is already taken'});
+        }
       }
     }
-
-    const updates = {};
-    if (username) updates.username = username;
-    if (bio) updates.bio = bio;
+    //update data 
+    const updates = {}
+    if (username) updates.username = username; 
+    if (bio) updates.bio = bio; 
+    if (profilePic) updates.profilePic = profilePic; 
 
     await userRef.update(updates);
 
@@ -135,37 +146,27 @@ app.get('/posts/:username', async (req, res) =>{
 app.post('/addPost', async (req, res) => {
 
   try {
-    // Reference to the Firestore database
-    const db = admin.firestore();
-
-    const { description, image, name, recipeLink, stars, timeHours, timeMin, uid } = req.body;
+    console.log('Received request body:', req.body);
+    const { description, name, recipeLink, stars, timeHours, timeMin, date, userId } = req.body;
 
     // Validate input
-    if (!description || !image || !name || !recipeLink || stars === undefined || timeHours === undefined || timeMin === undefined ||!uid) {
+    if (!description || !name || !recipeLink || stars === undefined || timeHours === undefined || timeMin === undefined || date === undefined) {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
-    // const postRef = db.collection('posts').doc(uid); 
-    // const postID = postRef.uid; // Firestore generated ID
+      const db = admin.firestore();
+      const userDocRef = db.collection('users').doc(userId);  // reference this user's document
+      const postCollection = userDocRef.collection('posts');   //create a 'posts' sub-collection for user
+      const newPostRef = postCollection.doc();  // auto-generates ID for new post
+      const newPost = { ...req.body, postId: newPostRef.id };
+      await newPostRef.set(newPost);
 
-    // Create a new document in the 'posts' collection
-    const newPost = {
-      postId, 
-      description,
-      image,
-      name,
-      recipeLink,
-      stars,
-      timeHours,
-      timeMin,
-      uid,
-    };
+      const globalPostRef = db.collection('posts'); //adds to global posts collection
+      await globalPostRef.doc(newPostRef.id).set(newPost);
+      
 
-    await postRef.set(newPost) 
-
-    // Respond with the document ID
-    return res.status(201).json({ message: 'Post added successfully!', postId: postRef.id });
-  } catch (error) {
+    return res.status(201).json({ message: 'Post added successfully!', postId: newPostRef.id });
+    } catch (error) {
     console.log('Error adding post:', error);
     res.status(500).json({ error: 'Internal server error.' });
   }
@@ -173,9 +174,9 @@ app.post('/addPost', async (req, res) => {
 
 //deleting a post
 app.delete('/posts/:postId', async (req, res) => {
-  const postId = req.params.postID;
+  const postId = req.params.postId; 
   try {
-    const postRef = db.collection('posts').doc(postID);
+    const postRef = db.collection('posts').doc(postId);
 
     //check if post exists
     const postSnapshot = await postRef.get(); 
@@ -209,8 +210,10 @@ app.get('/feed', async (req, res) =>{
   
 })
 
-
-
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+<<<<<<< HEAD
+
+=======
+>>>>>>> firebasestuff

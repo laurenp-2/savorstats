@@ -16,7 +16,6 @@ const Upload = () => {
   const [timeMin, setTimeMin] = useState(0);
 //  const [image, setImage] = useState<File | null>(null);
   const [hoveredStar, setHoveredStar] = useState(0);
-  const [pid, setPid] = useState("");
   const [date, setDate] = useState(null)
 
 
@@ -30,7 +29,6 @@ const Upload = () => {
   //  setImage(null);
     setHoveredStar(0);
     setDate(null);
-    setPid("")
   };
 
   interface PostData {
@@ -40,7 +38,6 @@ const Upload = () => {
     timeHours: number;
     timeMin: number;
     stars: number;
-    pid: string, 
     date: Date | null,
    // image: string | null;
   }
@@ -51,6 +48,26 @@ const Upload = () => {
   const { user } = useAuth();
 
   async function createPost(postData: PostData){
+    //handles the image being a URL and ensure image is permanently stored in FireStore
+    //  try {
+    //   let imageUrl: string | null = null;
+    //   if (image) {
+    //     const imageRef = ref(storage, `images/${Date.now()}_${image.name}`);
+    //     const uploadTask = uploadBytesResumable(imageRef, image); 
+        
+    //     await new Promise((resolve, reject) => {
+    //       uploadTask.on(
+    //         "state_changed",
+    //         null, 
+    //         (error) => reject(error), 
+    //         async () => {
+    //           imageUrl = await getDownloadURL(uploadTask.snapshot.ref); 
+    //           resolve(imageUrl);
+    //         }
+    //       );
+    //     });
+    //   }
+
     try {
       const response = await fetch('http://localhost:8080/addPost', {
        method: 'POST',
@@ -66,9 +83,10 @@ const Upload = () => {
             timeHours: postData.timeHours,
             timeMin: postData.timeMin,
             date: new Date(),
-            pid: postData.pid,
+            userId: user?.uid, 
         })
        });
+
        if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}, message: ${await response.text()}`);
       }
@@ -194,7 +212,6 @@ const Upload = () => {
             timeHours,
             timeMin,
             stars,
-            pid,
             date: new Date(),
         //    image : image ? URL.createObjectURL(image) : null,
           })
