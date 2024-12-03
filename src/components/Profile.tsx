@@ -73,7 +73,7 @@ const Profile = () => {
             <div className="profileColOne">
                 
               <img id="profilePicture"
-                src={profileData.profilePic ? URL.createObjectURL(profileData.profilePic) : "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"}
+                src={profileData.profilePic ? URL.createObjectURL(profileData.profilePic) : "pfpCook.jpg"}
 
               />
               <button onClick={() => setIsEditing(true)}>edit profile</button>
