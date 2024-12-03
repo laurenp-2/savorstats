@@ -28,6 +28,7 @@ const Feed: React.FC<FeedProps> = ({ signedIn, onSignIn }) => {
         throw new Error(`Error fetching posts: ${response.statusText}`);
       }
       const data = await response.json();
+      console.log(data);
       setPosts(data);
     } catch (error) {
       console.error("Error fetching posts2:", error);
@@ -69,6 +70,7 @@ const Feed: React.FC<FeedProps> = ({ signedIn, onSignIn }) => {
                   className="postImage"
                 />
                 <h3>{post.name}</h3>
+                {/* <h3>{post.id}</h3> */}
                 <p>{post.description}</p>
                 <a href={post.recipeLink} target="_blank" rel="noopener noreferrer">
                   View Recipe

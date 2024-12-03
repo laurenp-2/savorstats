@@ -212,7 +212,7 @@ const Upload = () => {
 
         <button
         id="uploadButton"
-        onClick={() =>
+        onClick={() => {
           createPost({
             name,
             description,
@@ -222,7 +222,9 @@ const Upload = () => {
             stars,
             date: new Date(),
         //    image : image ? URL.createObjectURL(image) : null,
-          })
+          });
+          reset();
+        }
         }
       >
         Upload

@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import NavBar from "./NavBar";
 import Upload from "./components/Upload";
 import Feed from "./components/Feed";
@@ -13,6 +13,7 @@ import { signIn, signOut } from './auth/auth';
 function App() {
   const [showWelcome, setShowWelcome] = useState(true);
   const { user } = useAuth(); // Get user from the context
+  const navigate = useNavigate();
 
   const handleArrowClick = () => {
     setShowWelcome(false);
@@ -26,15 +27,23 @@ function App() {
   const handleLogout = async () => {
     await signOut(); // Sign out the user using your custom signOut
     setShowWelcome(true); // Show the welcome popup after logout
+    navigate("/")
   };
+
+  const [hasRedirected, setHasRedirected] = useState(false); 
 
   useEffect(() => {
     if (user) {
       setShowWelcome(false); // Automatically hide the popup if the user is signed in
+      //when user logs in, they should always go to Feed (not Profile or Upload)
+      if (!hasRedirected) {
+        navigate("/"); // Redirect to Feed only if the user has not been redirected yet
+        setHasRedirected(true); // Mark that the user has been redirected
+      }
     } else {
-      setShowWelcome(true); // Show welcome popup if no user
+      setShowWelcome(true); // Show welcome popup if no user 
     }
-  }, [user]);
+  }, [user, navigate, hasRedirected]);
 
   return (
     <>

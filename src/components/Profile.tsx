@@ -36,14 +36,15 @@ const Profile = () => {
     setIsEditing(false);
   };
 
-  async function fetchUserPosts(username: string){
+  async function fetchUserPosts(uid: string){
     try{
-      const response = await fetch(`http://localhost:8080/posts/${username}`)
+      const response = await fetch(`http://localhost:8080/posts/${uid}`)
     if(!response.ok){
       throw new Error(`Failed to fetch posts: ${response.statusText}`);
 
     }
     const postsData = await response.json(); 
+    console.log(postsData);
     return postsData; 
     } catch (error){
       console.error('Error fetching posts:', error); 
@@ -52,8 +53,10 @@ const Profile = () => {
   }
 
   useEffect(() => {
-    fetchUserPosts(profileData.username).then((data) => setPosts(data));
-  }, [profileData.username]); 
+    if(user?.uid){
+        fetchUserPosts(user.uid).then((data) => setPosts(data));
+    }
+  }, [user?.uid]); 
 
   return (
     <div>

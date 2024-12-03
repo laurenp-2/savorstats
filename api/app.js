@@ -2,8 +2,6 @@ import express from 'express';
 import cors from 'cors'; 
 import admin from 'firebase-admin';
 import serviceAccount from './ServiceAccountKey.json' assert { type: 'json' };
-import { doc, setDoc } from "firebase/firestore"; 
-
 
 const app = express();
 const port = 8080;
@@ -18,7 +16,6 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
-
 
 //for creating new account 
 app.post('/signup', async(req, res) => {
@@ -126,16 +123,23 @@ app.get('/feed/:uid', async (req, res) => {
 });
 
 //get all of a users posts
-app.get('/posts/:username', async (req, res) =>{
+app.get('/posts/:uid', async (req, res) =>{
   try {
     const db = admin.firestore(); 
-    const uid = req.params.uid; 
+    const uid = req.params.uid;
+    console.log(uid); 
 
-    const postsSnapshot = await db.collection('posts').where('uid', '==', uid).get(); 
+    const postsSnapshot = await db.collection('users').doc(uid).collection('posts').get();
 
     const posts = postsSnapshot.docs.map((doc) => ({
-      id: doc.id, 
-      ...doc.data(),
+      id: doc.id,
+      name: doc.data().name || "Untitled", //default values if field is missing
+      image: doc.data().image || null,
+      description: doc.data().description || "No description available",
+      recipeLink: doc.data().recipeLink || "",
+      stars: doc.data().stars || 0,
+      timeHours: doc.data().timeHours || 0,
+      timeMin: doc.data().timeMin || 0,
     }));
     res.status(200).json(posts);
   } catch (error) {
@@ -150,6 +154,7 @@ app.post('/addPost', async (req, res) => {
 
   try {
     console.log('Received request body:', req.body);
+    //TODO should probably delete this so people do not have to input all fields
     const { description, name, recipeLink, stars, timeHours, timeMin, date, userId } = req.body;
 
     // Validate input
@@ -166,7 +171,6 @@ app.post('/addPost', async (req, res) => {
 
       const globalPostRef = db.collection('posts'); //adds to global posts collection
       await globalPostRef.doc(newPostRef.id).set(newPost);
-      
 
     return res.status(201).json({ message: 'Post added successfully!', postId: newPostRef.id });
     } catch (error) {
@@ -201,10 +205,21 @@ app.get('/feed', async (req, res) =>{
     const db = admin.firestore();
     const postsSnapshot = await db.collection('posts').get(); 
 
+    if (postsSnapshot.empty) {
+      return res.status(404).json({ message: "No posts found" });
+    }
+
     const posts = postsSnapshot.docs.map((doc) => ({
-      id: doc.id, 
-      ...doc.data,
+      id: doc.id,
+      name: doc.data().name || "Untitled", //default values if field is missing
+      image: doc.data().image || null,
+      description: doc.data().description || "No description available",
+      recipeLink: doc.data().recipeLink || "",
+      stars: doc.data().stars || 0,
+      timeHours: doc.data().timeHours || 0,
+      timeMin: doc.data().timeMin || 0,
     }));
+
     res.status(200).json(posts);
   } catch (error) {
     console.error('Error fetching posts:', error); 
