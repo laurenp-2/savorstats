@@ -43,31 +43,12 @@ const Upload = () => {
   }
   
 
+
   const storage = getStorage();
 
   const { user } = useAuth();
 
   async function createPost(postData: PostData){
-    //handles the image being a URL and ensure image is permanently stored in FireStore
-    //  try {
-    //   let imageUrl: string | null = null;
-    //   if (image) {
-    //     const imageRef = ref(storage, `images/${Date.now()}_${image.name}`);
-    //     const uploadTask = uploadBytesResumable(imageRef, image); 
-        
-    //     await new Promise((resolve, reject) => {
-    //       uploadTask.on(
-    //         "state_changed",
-    //         null, 
-    //         (error) => reject(error), 
-    //         async () => {
-    //           imageUrl = await getDownloadURL(uploadTask.snapshot.ref); 
-    //           resolve(imageUrl);
-    //         }
-    //       );
-    //     });
-    //   }
-
     try {
       const response = await fetch('http://localhost:8080/addPost', {
        method: 'POST',
@@ -204,7 +185,7 @@ const Upload = () => {
 
         <button
         id="uploadButton"
-        onClick={() =>
+        onClick={() => {
           createPost({
             name,
             description,
@@ -214,8 +195,9 @@ const Upload = () => {
             stars,
             date: new Date(),
         //    image : image ? URL.createObjectURL(image) : null,
-          })
-        }
+          });
+          reset();
+        }}
       >
         Upload
       </button>
