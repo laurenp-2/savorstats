@@ -1,20 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { ChangeEvent } from "react";
+//import { ChangeEvent } from "react";
 import { useState } from "react";
-import { AuthUserProvider, useAuth } from "../auth/AuthUserProvider";
-import { auth, database } from "../utils/firebase";
-
+import { useAuth } from "../auth/AuthUserProvider";
+//import { auth, database } from "../utils/firebase";
 
 interface EditProfileProps {
   profileData: {
     username: string;
     bio: string;
-    profilePic: File | null;
+    // profilePic: File | null; // Removed image handling
   };
   onSave: (updatedData: {
     username: string;
     bio: string;
-    profilePic: File | null;
+    // profilePic: File | null; // Removed image handling
   }) => void;
   onCancel: () => void;
 }
@@ -23,40 +21,35 @@ const EditProfile = ({ profileData, onSave, onCancel }: EditProfileProps) => {
   const { user } = useAuth();
   const [username, setUsername] = useState(profileData.username);
   const [bio, setBio] = useState(profileData.bio);
-  const [profilePic, setProfilePic] = useState<File | null>(
-    profileData.profilePic
-  );
 
-  const updateProfile = async (userID: string, updatedData: EditProfileProps["profileData"]) => {
+  const handleSave = async () => {
     try {
-        const response = await fetch(`http://localhost:8080/api/users/:userId'`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedData)
-        });
-        const data = await response.json();
-        console.log(data.message); // "Updated profile for user: {username}"
-        console.log(data.data);    // The updated profile data
+      const response = await fetch(`http://localhost:8080/users/${user?.uid}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          bio,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}, message: ${await response.text()}`);
+      }
+
+      const data = await response.json();
+      console.log("Profile updated successfully", data);
+
+      onSave({
+        username,
+        bio,
+        // profilePic: undefined, // Uncomment if you decide to add image handling later
+      });
     } catch (error) {
-        console.error('Error:', error);
+      console.error('Error updating profile:', error);
     }
-}
-
-  const uploadImg = async (event: ChangeEvent<HTMLInputElement>) => {
-    //stuff to do when image is uploaded
-    const file = event.target.files?.[0];
-    if (file != null && file.type.startsWith("image/")) {
-      setProfilePic(file);
-
-    }
-  };
-
-  const handleSave = () => {
-    onSave({
-      username,
-      bio,
-      profilePic,
-    });
   };
 
   return (
@@ -82,36 +75,6 @@ const EditProfile = ({ profileData, onSave, onCancel }: EditProfileProps) => {
               setBio(event.target.value);
             }}
           />
-        </div>
-        <div className="updateProfPic">
-          <p>Profile Pic:</p>
-          <input
-            id="uploadImgInput"
-            accept="image/*"
-            type="file"
-            onChange={uploadImg}
-          />
-          {!profilePic ? (
-            <>
-              <label htmlFor="uploadImgInput" id="uploadProfPicLabel">
-                Upload Image
-              </label>
-            </>
-          ) : (
-            <div className="imageInputtedCol">
-              {profilePic && (
-                <img
-                  id="uploadedProfPic"
-                  src={URL.createObjectURL(profilePic)}
-                  alt="Uploaded preview"
-                />
-              )}
-
-              <label htmlFor="uploadImgInput" id="changeProfPicLabel">
-                Change Image
-              </label>
-            </div>
-          )}
         </div>
       </div>
       <div className="updateProfButtons">

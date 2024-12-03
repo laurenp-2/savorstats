@@ -8,6 +8,7 @@ import serviceAccount from './ServiceAccountKey.json' assert { type: 'json' };
 
 const app = express();
 const port = 8080;
+
 app.use(express.json());
 app.use(cors());
 
@@ -20,7 +21,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 
-//for creating new account 
+//Signup endpoint 
 app.post('/signup', async(req, res) => {
   try {
     const db = admin.firestore();
@@ -57,49 +58,36 @@ app.post('/signup', async(req, res) => {
   }
 });
 
-//updating profile 
+//Update Profile
 app.put('/users/:userId', async (req, res) => {
-  const userId = req.params.uid; 
-  const {username, bio, profilePic} = req.body; 
+  const userId = req.params.userId;
+  const { username, bio } = req.body;
 
-  //check if anything was edited 
-  if(!username && !bio && !profilePic){
-    return res.status(400).json({error: 'no changes made'});
+  if (!username && !bio) {
+    return res.status(400).json({ error: 'No changes made' });
   }
 
   try {
-    const db = admin.firestore();
-    //change 'users' when get firestore set up and category names 
-    const userRef = db.collection('users').doc(uid);
+    const userRef = db.collection('users').doc(userId);
 
-    //check if username is unique
-
-    if(username){
-      const userCheck = await db.collection('users').where('username', '==', username);
-      if(!usernameSnapshot.empty){
-        //make sure the username is someone elses and they're not just using the same one
-        existingUser = userCheck.docs[0].id; 
-        if(existingUser !== userId){
-          return res.status(400).json({error: 'Username is already taken'});
-        }
+    if (username) {
+      const usernameCheck = await db.collection('users').where('username', '==', username).get();
+      if (!usernameCheck.empty) {
+        return res.status(400).json({ error: 'Username is already taken' });
       }
     }
-    //update data 
-    const updates = {}
-    if (username) updates.username = username; 
-    if (bio) updates.bio = bio; 
-    if (profilePic) updates.profilePic = profilePic; 
+
+    const updates = {};
+    if (username) updates.username = username;
+    if (bio) updates.bio = bio;
 
     await userRef.update(updates);
 
-    res.status(200).json({
-      message: 'profile updated successfully!'
-    });
-  } catch (error){
-    console.log('Error updating profile', error);
-    res.status(500).json({error: 'Error updating profile'});
+    res.status(200).json({ message: 'Profile updated successfully!' });
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.status(500).json({ error: 'Error updating profile' });
   }
-  
 });
 
 //getting a users profile

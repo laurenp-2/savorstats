@@ -57,7 +57,6 @@ const Feed: React.FC<FeedProps> = ({ signedIn, onSignIn }) => {
         <div className="feed">
           {loading && <p>Loading...</p>}
           {error && <p>{error}</p>}
-          <h2>Feed</h2>
           {posts.length === 0 ? (
             <p>No posts available</p>
           ) : (

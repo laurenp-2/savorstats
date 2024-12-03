@@ -46,76 +46,11 @@ const Upload = () => {
   }
   
 
-  // const uploadImg = async (event: ChangeEvent<HTMLInputElement>) => {
-  //   //stuff to do when image is uploaded
-  //   const file = event.target.files?.[0];
-  //   if (file != null && file.type.startsWith("image/")) {
-  //     setImage(file);
-  //   }
-  // };
-
   const storage = getStorage();
 
   const { user } = useAuth();
 
   async function createPost(postData: PostData){
-    //handles the image being a URL and ensure image is permanently stored in FireStore
-    //  try {
-    //   let imageUrl: string | null = null;
-    //   if (image) {
-    //     const imageRef = ref(storage, `images/${Date.now()}_${image.name}`);
-    //     const uploadTask = uploadBytesResumable(imageRef, image); 
-        
-    //     await new Promise((resolve, reject) => {
-    //       uploadTask.on(
-    //         "state_changed",
-    //         null, 
-    //         (error) => reject(error), 
-    //         async () => {
-    //           imageUrl = await getDownloadURL(uploadTask.snapshot.ref); 
-    //           resolve(imageUrl);
-    //         }
-    //       );
-    //     });
-    //   }
-  //try {
-    //   const response2 = await fetch('http://localhost:8080/addPost', {
-    //     method: 'POST', 
-    //     headers: {
-    //       'Content-Type' : 'application/json', 
-    //     }, 
-    //     body: JSON.stringify(postData),
-    //   });
-
-    //   if(!response2.ok){
-    //     throw new Error(`Failed to create post: ${response2.statusText}`);
-    //   }
-
-    //   const result = await response2.json();
-
-    //   if(user != null) {
-    //   const database = getFirestore(); 
-    //   const userDb = doc(database, "users", user.uid);
-    //   const postCollection = collection(userDb, "posts");
-    //   const newPostRef = doc(postCollection);
-    // //  console.log('Image URL:', imageUrl); 
-    //   await setDoc(newPostRef, {
-    //       name: postData.name,
-    //       description: postData.description,
-    //       recipeLink: postData.recipeLink,
-    //       timeHours: postData.timeHours,
-    //       timeMin: postData.timeMin,
-    //       stars: postData.stars,
-    //      // image: imageUrl,
-    //       date: new Date(),
-    //   });
-    // }
-    //   // console.log('Post created successfully:', result); 
-    //   // return result; 
-
-    // } catch (error){
-    //   console.error('Error creating post: ', error);
-    // }
     try {
       const response = await fetch('http://localhost:8080/addPost', {
        method: 'POST',
