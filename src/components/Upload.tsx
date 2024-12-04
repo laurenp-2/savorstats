@@ -157,8 +157,7 @@ const Upload = () => {
           <div className="uploadImagePlaceholder">
             <img
                     src={"assets/bakingplaceholder.jpg"}
-              
-                    id="postImage"
+                    id="uploadImage"
                   />
                   <p>Upload your own images coming soon!</p>
           </div>

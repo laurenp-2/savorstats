@@ -474,8 +474,8 @@ input:hover {
 }
 
 #postImage {
-  width: 350px;
-  height: 338px;
+  width: 250px;
+  height: 250px;
   border-radius: 5px;
 }
 
@@ -508,4 +508,10 @@ input:hover {
   display: flex;
   flex-direction: column;
 
+}
+
+#uploadImage {
+  width: 350px;
+  height: 350px;
+  border-radius: 8px;
 }
