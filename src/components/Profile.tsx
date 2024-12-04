@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import EditProfile from './EditProfile';
 import { useAuth } from "../auth/AuthUserProvider";
 import { Star, Trash2 } from "lucide-react";
+import { post } from "node_modules/axios/index.d.cts";
 
 interface Post {
   id: string,
@@ -45,7 +46,6 @@ const Profile = () => {
 
     }
     const postsData = await response.json(); 
-    console.log(postsData);
     return postsData; 
     } catch (error){
       console.error('Error fetching posts:', error); 
@@ -54,19 +54,23 @@ const Profile = () => {
   }
 
   async function deletePost(postId: string) {
+    console.log("about to delete post", postId); 
     try {
-      const response = await fetch(`/posts/${postId}`, {
+      console.log("checker 1"); 
+      const response = await fetch(`http://localhost:8080/posts/${postId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
         }
       });
+      console.log("checker 2"); 
   
       if (!response.ok) {
+        console.log("checker 3"); 
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to delete post');
       }
-  
+      console.log("checker 4"); 
       const result = await response.json();
       console.log(result.message); // "Post deleted!"
 
