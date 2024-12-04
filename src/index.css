@@ -208,13 +208,13 @@ input:hover {
 .secondRowInputs {
   display: flex;
   flex-direction: row;
-  gap: 2vw;
+  gap: 3vw;
   flex-wrap: wrap;
   width: 100%;
 }
 
 .columnInputs {
-  width: 45%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   gap: 1em;
@@ -387,7 +387,7 @@ input:hover {
 }
 
 #welcomeHeader {
-  font-size: 9vw;
+  font-size: 8vw;
   margin-top: 0px;
   font-weight: 100;
   text-align: center;
@@ -474,8 +474,9 @@ input:hover {
 }
 
 #postImage {
-  width: 20%;
-  height: 20%;
+  width: 250px;
+  height: 250px;
+  border-radius: 5px;
 }
 
 
@@ -500,5 +501,21 @@ input:hover {
 }
 
 #myPostsLabel {
+  margin-left: 16px;
+}
+
+.uploadImagePlaceholder {
+  display: flex;
+  flex-direction: column;
+
+}
+
+#uploadImage {
+  width: 350px;
+  height: 350px;
+  border-radius: 8px;
+}
+
+#postsHeader {
   margin-left: 16px;
 }

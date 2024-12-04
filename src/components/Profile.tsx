@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import EditProfile from './editProfile';
+import EditProfile from './EditProfile';
 import { useAuth } from "../auth/AuthUserProvider";
-import { Star } from "lucide-react";
+import { Star, Trash2 } from "lucide-react";
+import { post } from "node_modules/axios/index.d.cts";
 
 interface Post {
   id: string,
@@ -45,11 +46,40 @@ const Profile = () => {
 
     }
     const postsData = await response.json(); 
-    console.log(postsData);
     return postsData; 
     } catch (error){
       console.error('Error fetching posts:', error); 
       return []; 
+    }
+  }
+
+  async function deletePost(postId: string) {
+    console.log("about to delete post", postId); 
+    try {
+      console.log("checker 1"); 
+      const response = await fetch(`http://localhost:8080/posts/${postId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log("checker 2"); 
+  
+      if (!response.ok) {
+        console.log("checker 3"); 
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to delete post');
+      }
+      console.log("checker 4"); 
+      const result = await response.json();
+      console.log(result.message); // "Post deleted!"
+
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+
+      return result;
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      throw error; // Re-throw to allow caller to handle the error
     }
   }
 
@@ -59,28 +89,7 @@ const Profile = () => {
     }
   }, [user?.uid]); 
 
-  async function deletePost(postId) {
-    try {
-      const response = await fetch(`/posts/${postId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
   
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to delete post');
-      }
-  
-      const result = await response.json();
-      console.log(result.message); // "Post deleted!"
-      return result;
-    } catch (error) {
-      console.error('Error deleting post:', error);
-      throw error; // Re-throw to allow caller to handle the error
-    }
-  }
 
   return (
     <div>
@@ -97,10 +106,10 @@ const Profile = () => {
             <div className="profileColOne">
                 
               <img id="profilePicture"
-                src={profileData.profilePic ? URL.createObjectURL(profileData.profilePic) : "pfpCook.jpg"}
+                src={profileData.profilePic ? URL.createObjectURL(profileData.profilePic) : "assets/pfpCook.jpg"}
 
               />
-              <button onClick={() => setIsEditing(true)}>edit profile</button>
+              {/* <button onClick={() => setIsEditing(true)}>edit profile</button> */}
             </div>
 
             <div className="profileColTwo">
@@ -110,18 +119,18 @@ const Profile = () => {
           </div>
           {/*Render posts */}
           <div className="profileFeed">
-            <h3>My Posts</h3>
+            <h3 id="postsHeader">My Posts</h3>
             {posts.length > 0 ? (
               posts.map((post) => (
                 <div key={post.id} className="postCard">
                 <img
-                  src={post.image || "https://via.placeholder.com/150"}
+                  src={post.image || "assets/bakingplaceholder.jpg"}
                   alt={post.name}
                   id="postImage"
                 />
                 <div className="postCardInfo">
                     <div className="postCardInfoFirstLine"> 
-                      <h3>Name:{post.name}</h3>
+                      <h3>{post.name}</h3>
                       
                       <div className="starRating">
             
@@ -134,8 +143,9 @@ const Profile = () => {
                       ))}
                     </div>
                       <p>Time: {post.timeHours}h {post.timeMin}m</p>
+                      <Trash2 onClick={() => deletePost(post.id)}/>
                     </div>
-                    <p>Description:{post.description}</p>
+                    <p>{post.description}</p>
                     <a href={post.recipeLink} target="_blank" rel="noopener noreferrer">
                         View Recipe
                       </a>
