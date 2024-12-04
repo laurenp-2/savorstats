@@ -515,3 +515,7 @@ input:hover {
   height: 350px;
   border-radius: 8px;
 }
+
+#postsHeader {
+  margin-left: 16px;
+}
