@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, ChangeEvent } from "react";
 import { Star } from "lucide-react";
-import { database } from "../utils/firebase";
-import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
+// import { database } from "../utils/firebase";
+// import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useAuth } from "../auth/AuthUserProvider";
 //import { post } from "node_modules/axios/index.d.cts";

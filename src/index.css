@@ -467,6 +467,18 @@ input:hover {
 }
 
 .postCardInfoFirstLine {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.privating {
+  display: flex;
+  gap: 0.5em;
+}
+
+.pcFirstLeft {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -518,4 +530,46 @@ input:hover {
 
 #postsHeader {
   margin-left: 16px;
+}
+
+.privatePopup {
+  display: flex;
+  background-color: #ffbc64;
+  color: #ffffff;
+  position: fixed;
+  text-align: center;
+  padding: 0px;
+  width: 40%;
+  height: 40px;
+  top: 1em;
+  left: 30%;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInOut 5s ease-in-out forwards;
+}
+
+.privatePopup p {
+margin: 0px;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0; /* Start invisible */
+    transform: translateY(-20px); /* Start slightly above */
+  }
+  10% {
+    opacity: 1; /* Fully visible */
+    transform: translateY(0); /* At its final position */
+  }
+  90% {
+    opacity: 1; /* Remain fully visible */
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0; /* Fade out */
+    transform: translateY(-20px); /* Move up while fading */
+  }
 }

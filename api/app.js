@@ -88,7 +88,7 @@ app.put('/users/:userId', async (req, res) => {
     const updates = {}
     if (username) updates.username = username; 
     if (bio) updates.bio = bio; 
-    if (profilePic) updates.profilePic = profilePic; 
+    // if (profilePic) updates.profilePic = profilePic; 
 
     await userRef.update(updates);
 

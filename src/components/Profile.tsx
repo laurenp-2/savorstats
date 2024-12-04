@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import EditProfile from './EditProfile';
 import { useAuth } from "../auth/AuthUserProvider";
-import { Star, Trash2 } from "lucide-react";
-import { post } from "node_modules/axios/index.d.cts";
+import { Star, Lock } from "lucide-react";
+// import { post } from "node_modules/axios/index.d.cts";
 
 interface Post {
   id: string,
@@ -24,6 +24,7 @@ const Profile = () => {
     profilePic: null as File | null,
   });
 
+  const [showPopup, setShowPopup] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
 
@@ -74,7 +75,9 @@ const Profile = () => {
       const result = await response.json();
       console.log(result.message); // "Post deleted!"
 
-      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+      // setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+
+      setShowPopup(true);
 
       return result;
     } catch (error) {
@@ -89,10 +92,28 @@ const Profile = () => {
     }
   }, [user?.uid]); 
 
+  useEffect(() => {
+    let timeoutId: string | number | NodeJS.Timeout | undefined;
+
+    if (showPopup) {
+      timeoutId = setTimeout(() => {
+        setShowPopup(false);
+      }, 10000); // 10 seconds
+    }
+
+    return () => clearTimeout(timeoutId);
+  }, [showPopup]);
+
   
 
   return (
     <div>
+      {/* show a popup so that users know their post has been removed from the feed */}
+      {showPopup && (
+        <div className="privatePopup">
+          <p>Post has been removed from the feed!</p>
+        </div>
+      )}
       {isEditing ? (
         // editProfile stuff
         <EditProfile
@@ -117,6 +138,7 @@ const Profile = () => {
               <p>{profileData.bio}</p>
             </div>
           </div>
+          
           {/*Render posts */}
           <div className="profileFeed">
             <h3 id="postsHeader">My Posts</h3>
@@ -130,20 +152,27 @@ const Profile = () => {
                 />
                 <div className="postCardInfo">
                     <div className="postCardInfoFirstLine"> 
-                      <h3>{post.name}</h3>
+                      <div className="pcFirstLeft">
+                        <h3>{post.name}</h3>
+                        
+                        <div className="starRating">
+              
+                        {Array.from({ length: post.stars }, (_, index) => (
+                          <Star key={index}  size={24} className="starIcon" id="filledPostStars"/>
+                        ))}
                       
-                      <div className="starRating">
-            
-                      {Array.from({ length: post.stars }, (_, index) => (
-                        <Star key={index}  size={24} className="starIcon" id="filledPostStars"/>
-                      ))}
-                     
-                      {Array.from({ length: 5 - post.stars }, (_, index) => (
-                        <Star key={post.stars + index} size={24} className="starIcon" id="unfilledPostStars"/>
-                      ))}
-                    </div>
-                      <p>Time: {post.timeHours}h {post.timeMin}m</p>
-                      <Trash2 onClick={() => privatePost(post.id)}/>
+                        {Array.from({ length: 5 - post.stars }, (_, index) => (
+                          <Star key={post.stars + index} size={24} className="starIcon" id="unfilledPostStars"/>
+                        ))}
+                      </div>
+                        <p>Time: {post.timeHours}h {post.timeMin}m</p>
+                      </div>
+                      
+                      <div className="privating">
+                        <p>Private post </p>
+                        <Lock onClick={() => privatePost(post.id)}/>
+                      </div>
+                      
                     </div>
                     <p>{post.description}</p>
                     <a href={post.recipeLink} target="_blank" rel="noopener noreferrer">
