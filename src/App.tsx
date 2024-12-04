@@ -52,7 +52,7 @@ function App() {
               id="welcomeHeader"
               className="cssanimation sequence fadeInBottom"
             >
-              Welcome to SavorStats!
+              Welcome to SavorStats
             </h1>
             <div className="welcomeExit">
               <p>get started</p>
