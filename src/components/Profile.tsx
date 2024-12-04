@@ -59,6 +59,29 @@ const Profile = () => {
     }
   }, [user?.uid]); 
 
+  async function deletePost(postId) {
+    try {
+      const response = await fetch(`/posts/${postId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to delete post');
+      }
+  
+      const result = await response.json();
+      console.log(result.message); // "Post deleted!"
+      return result;
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      throw error; // Re-throw to allow caller to handle the error
+    }
+  }
+
   return (
     <div>
       {isEditing ? (
