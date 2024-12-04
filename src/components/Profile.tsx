@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import EditProfile from './EditProfile';
+import EditProfile from './editProfile';
 import { useAuth } from "../auth/AuthUserProvider";
 import { Star } from "lucide-react";
 
@@ -59,6 +59,29 @@ const Profile = () => {
     }
   }, [user?.uid]); 
 
+  async function deletePost(postId) {
+    try {
+      const response = await fetch(`/posts/${postId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to delete post');
+      }
+  
+      const result = await response.json();
+      console.log(result.message); // "Post deleted!"
+      return result;
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      throw error; // Re-throw to allow caller to handle the error
+    }
+  }
+
   return (
     <div>
       {isEditing ? (
@@ -74,10 +97,10 @@ const Profile = () => {
             <div className="profileColOne">
                 
               <img id="profilePicture"
-                src={profileData.profilePic ? URL.createObjectURL(profileData.profilePic) : "assets/pfpCook.jpg"}
+                src={profileData.profilePic ? URL.createObjectURL(profileData.profilePic) : "pfpCook.jpg"}
 
               />
-              {/* <button onClick={() => setIsEditing(true)}>edit profile</button>  */}
+              <button onClick={() => setIsEditing(true)}>edit profile</button>
             </div>
 
             <div className="profileColTwo">
@@ -87,18 +110,18 @@ const Profile = () => {
           </div>
           {/*Render posts */}
           <div className="profileFeed">
-            <h3 id="myPostsLabel">My Posts</h3>
+            <h3>My Posts</h3>
             {posts.length > 0 ? (
               posts.map((post) => (
                 <div key={post.id} className="postCard">
                 <img
-                  src={post.image || "assets/bakingplaceholder.jpg"}
+                  src={post.image || "https://via.placeholder.com/150"}
                   alt={post.name}
                   id="postImage"
                 />
                 <div className="postCardInfo">
                     <div className="postCardInfoFirstLine"> 
-                      <h3>{post.name}</h3>
+                      <h3>Name:{post.name}</h3>
                       
                       <div className="starRating">
             
