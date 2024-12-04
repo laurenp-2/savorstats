@@ -177,13 +177,10 @@ app.post('/addPost', async (req, res) => {
   }
 });
 
-//deleting a post
+//privating a post
 app.delete('/posts/:postId', async (req, res) => {
-  console.log('going to try to delete post', postId);
   
   const postId = req.params.postId; 
-  console.log('Post ID to delete:', postId);
-  console.log('User ID associated with delete request'); 
   
   try {
     const postRef = db.collection('posts').doc(postId);
@@ -200,17 +197,6 @@ app.delete('/posts/:postId', async (req, res) => {
 
     //delete from post collection
     await postRef.delete(); 
-
-    // delete from user's sub-collection
-    const userPostRef = db.collection('users').doc(uid).collection('posts').doc(postId);
-    const userPostSnapshot = await userPostRef.get();
-
-    if (!userPostSnapshot.exists) {
-      console.log(`Post ${postId} not found in user's posts sub-collection.`);
-    } else {
-      await userPostRef.delete();
-      console.log(`Post ${postId} deleted from user's posts sub-collection.`);
-    }
 
     res.status(200).json({message: `Post deleted!`});
   } catch (error){
