@@ -53,7 +53,7 @@ const Profile = () => {
     }
   }
 
-  async function deletePost(postId: string) {
+  async function privatePost(postId: string) {
     console.log("about to delete post", postId); 
     try {
       console.log("checker 1"); 
@@ -143,7 +143,7 @@ const Profile = () => {
                       ))}
                     </div>
                       <p>Time: {post.timeHours}h {post.timeMin}m</p>
-                      <Trash2 onClick={() => deletePost(post.id)}/>
+                      <Trash2 onClick={() => privatePost(post.id)}/>
                     </div>
                     <p>{post.description}</p>
                     <a href={post.recipeLink} target="_blank" rel="noopener noreferrer">
