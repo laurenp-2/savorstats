@@ -70,7 +70,7 @@ function App() {
               <div className="header">
                 <div className="left">
                   <h1>savorstats</h1>
-                  <h3>Save your stats!</h3>
+                  <p>Save your stats!</p>
                 </div>
                 {user && (
                   <div className="logOut">

@@ -154,13 +154,22 @@ const Upload = () => {
               }}
             />
           </div>
-          <input
+          <div className="uploadImagePlaceholder">
+            <img
+                    src={"assets/bakingplaceholder.jpg"}
+              
+                    id="postImage"
+                  />
+                  <p>Upload your own images coming soon!</p>
+          </div>
+          
+          {/* <input
             id="uploadImgInput"
             accept="image/*"
             type="file"
            // onChange={uploadImg}
           />
-          {/* {!image ? (
+           {!image ? (
             <>
               <label htmlFor="uploadImgInput" id="uploadImgLabel">
                 Upload Image
@@ -180,7 +189,7 @@ const Upload = () => {
                 Change Image
               </label>
             </div>
-          )} */}
+          )}  */}
         </div>
 
         <button

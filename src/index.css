@@ -208,13 +208,13 @@ input:hover {
 .secondRowInputs {
   display: flex;
   flex-direction: row;
-  gap: 2vw;
+  gap: 3vw;
   flex-wrap: wrap;
   width: 100%;
 }
 
 .columnInputs {
-  width: 45%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   gap: 1em;
@@ -474,8 +474,9 @@ input:hover {
 }
 
 #postImage {
-  width: 20%;
-  height: 20%;
+  width: 350px;
+  height: 338px;
+  border-radius: 5px;
 }
 
 
@@ -501,4 +502,10 @@ input:hover {
 
 #myPostsLabel {
   margin-left: 16px;
+}
+
+.uploadImagePlaceholder {
+  display: flex;
+  flex-direction: column;
+
 }
