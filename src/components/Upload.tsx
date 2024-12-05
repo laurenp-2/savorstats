@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
 import { Star } from "lucide-react";
 // import { database } from "../utils/firebase";
 // import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
@@ -17,6 +17,8 @@ const Upload = () => {
 //  const [image, setImage] = useState<File | null>(null);
   const [hoveredStar, setHoveredStar] = useState(0);
   const [date, setDate] = useState(null)
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
 
 
   const reset = () => {
@@ -77,10 +79,22 @@ const Upload = () => {
      } 
      catch (error) {
       console.error('Error creating post: ', error);
+      setPopupMessage('Please fill out all fields');
+      setShowPopup(true);
       } 
   }
 
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
   
+    if (showPopup) {
+      timeoutId = setTimeout(() => {
+        setShowPopup(false);
+      }, 5000); // 5 seconds
+    }
+  
+    return () => clearTimeout(timeoutId);
+  }, [showPopup]);
 
   const renderStars = () => {
     return [1, 2, 3, 4, 5].map((rating) => (
@@ -98,6 +112,11 @@ const Upload = () => {
 
   return (
     <>
+        {showPopup && (
+      <div className="privatePopup">
+        <p>{popupMessage}</p>
+      </div>
+    )}
       <div className="inputFields">
         <div className="firstRowInputs">
           <input
