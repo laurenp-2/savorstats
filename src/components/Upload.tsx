@@ -79,7 +79,7 @@ const Upload = () => {
      } 
      catch (error) {
       console.error('Error creating post: ', error);
-      setPopupMessage('Please fill out all fields');
+      setPopupMessage('Please fill out all fields!');
       setShowPopup(true);
       } 
   }
