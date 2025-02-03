@@ -1,6 +1,12 @@
 # SavorStats
 SavorStats is a social media site for foodies! You can upload your latest cooking adventures, see what your friends are making, and discover great recipes for your next dish. Whether you're looking for inspiration to cook at home or want to brag about your latest soufflé, SavorStats provides a platform for all food-related interests.   
-  
+
+## To run the project locally:   
+    git clone https://github.com/laurenp-2/savorstats.git  
+    cd savorstats  
+    node api/app.js
+    pnpm dev
+
 ### Profile page: 
 ![savorstats](https://github.com/user-attachments/assets/441f95cb-fcd4-4936-a11c-5fd4cff3a822)
 
